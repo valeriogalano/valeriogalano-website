@@ -1,0 +1,135 @@
+/* Terminal Green Theme CSS */
+:root {
+  --black: #000000;
+  --green: #00ff66;
+  --g1: #111;
+  --g2: #222;
+  --g4: #444;
+  /* default footer height; updated at runtime for accuracy */
+  --footer-h: 64px;
+}
+
+html, body {
+  height: 100%;
+}
+
+body.tg-body {
+  background: var(--black);
+  color: var(--green);
+  font-family: 'JetBrains Mono', 'Fira Code', 'Iosevka', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 16px;
+  line-height: 1.4;
+  margin: 0;
+  text-rendering: optimizeLegibility;
+  /* Force a right vertical scrollbar like classic editors */
+  overflow-y: auto;
+  /* Reserve space for fixed footer */
+  padding-bottom: var(--footer-h); /* matches .tg-footer height */
+}
+
+/* Slight CRT glow */
+.crt-glow, .vim-nav a, .vim-bar, .ascii-title, .vim-status {
+  text-shadow: 0 0 8px var(--green);
+}
+
+a { color: var(--green); text-decoration: none; }
+a:hover, a:focus { text-decoration: underline; }
+a:focus { outline: none; }
+
+.tg-header { position: relative; padding: 16px 16px 8px; border-bottom: 1px solid var(--g2); }
+.tg-logo { position: absolute; right: 16px; top: 16px; }
+.tg-logo img { display: block; max-width: 80px; height: auto; filter: drop-shadow(0 0 8px var(--green)); }
+
+.tg-ascii { padding-right: 110px; display:none; }
+.ascii-title { margin: 0; color: var(--green); font-size: 14px; line-height: 1.1; white-space: pre; }
+
+.vim-bar { margin-top: 8px; border-top: 1px solid var(--g2); padding-top: 6px; color: var(--green); }
+.vim-bar .vim-path { color: var(--green); }
+.vim-bar .vim-sep { color: var(--green); }
+.vim-bar .vim-mode { color: var(--green); font-weight: 600; }
+
+.vim-nav { padding: 6px 16px; border-bottom: 1px solid var(--g2); }
+.vim-nav a { margin-right: 16px; border-bottom: 1px dotted var(--g4); padding-bottom: 2px; }
+.vim-nav a:hover { border-bottom-style: solid; }
+
+.tg-content { padding: 16px; }
+.tg-article-header { margin-bottom: 12px; }
+.tg-buffer {
+  padding-left: 12px;
+  /* Safety bottom padding so the last line never sits under the fixed footer */
+  padding-bottom: 36px;
+}
+
+/* In-content link keyboard focus highlight (j/k navigation) */
+.tg-link-focus {
+  /* High-contrast selection: black text on green background */
+  color: var(--black) !important;
+  background: var(--green);
+  /* No underline when highlighted */
+  text-decoration: none !important;
+  /* Remove any nav underline/border */
+  border-bottom: none !important;
+  outline: 1px dotted var(--black);
+  outline-offset: 2px;
+  box-shadow: 0 0 8px var(--green);
+  /* Make background visible around glyphs */
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
+/* Directory listing */
+.tg-dir { list-style: none; padding: 0; margin: 0; }
+.tg-dir li { padding: 4px 0; border-bottom: 1px dotted var(--g2); display: flex; gap: 12px; align-items: baseline; }
+.tg-dir-perm { color: var(--green); opacity: 0.7; }
+.tg-dir-link { color: var(--green); }
+.tg-dir-date { margin-left: auto; opacity: 0.8; }
+
+/* Command line navigation */
+/* Replace the footer statusline when active */
+.cmd-wrapper {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  /* No background or borders: perfectly plain */
+  background: transparent;
+  border: none;
+  /* Increase vertical space to match taller footer */
+  padding: 10px 16px 20px; /* match footer padding for alignment */
+  display: none;
+  z-index: 1100; /* above footer */
+}
+.cmd-wrapper.active { display:block; }
+.cmd-output { display: none; }
+.cmd-line { display: flex; align-items: center; }
+.cmd-input {
+  background: transparent;
+  color: var(--green);
+  border: none;
+  padding: 0;
+  outline: none;
+  width: 100%;
+  caret-color: var(--green);
+  font: inherit;
+  line-height: 1.4;
+}
+.cmd-input:focus { outline: none; }
+
+/* No input glow for command mode */
+
+/* Footer statusline - fixed to bottom like Vim statusline */
+.tg-footer { position: fixed; left: 0; right: 0; bottom: 0; border-top: 1px solid var(--g2); padding: 10px 16px 20px; background: var(--black); z-index: 800; }
+.vim-status { color: #00cc55; opacity: 0.9; }
+/* When command is active, hide the status text so input visually replaces it */
+body.cmd-active .tg-footer .vim-status { visibility: hidden; }
+
+/* Scrollbar (optional) */
+* { scrollbar-width: thin; scrollbar-color: var(--green) var(--black); }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--black); }
+::-webkit-scrollbar-thumb { background-color: var(--green); border: 2px solid var(--black); }
+
+/* Code blocks match theme */
+pre, code { color: var(--green); background: #000; border: 1px solid var(--g2); }
+pre { padding: 8px; overflow: auto; }
+code { padding: 1px 3px; }
+
+/* (removed) Visual cursor overlay styles and blink animation */

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang='{{ default "en" .Site.LanguageCode }}'>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{ if .Title }}{{ .Title }} | {{ end }}{{ .Site.Title }}</title>
+  {{/* Favicon & PWA basics */}}
+  {{ $favicon := .Site.Params.Favicon | default "/img/logo.png" }}
+  <link rel="icon" href="{{ $favicon }}">
+  <link rel="icon" type="image/svg+xml" href="/img/logo.svg">
+  {{/* If you add sized icons, uncomment the lines below and provide the files in /static/img */}}
+  {{/* <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png"> */}}
+  {{/* <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png"> */}}
+  {{/* <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png"> */}}
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="mask-icon" href="/img/logo.svg" color="#00ff66">
+  <meta name="theme-color" content="#000000" />
+  {{/* Fonts: prefer JetBrains Mono, fallback monospace */}}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  {{ $css := resources.Get "css/main.css" | resources.Minify | resources.Fingerprint }}
+  <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}" />
+</head>
+<body class="tg-body">
+  {{ partial "header.html" . }}
+  {{ partial "nav_links.html" . }}
+
+  <main id="content" class="tg-content">
+    {{ block "main" . }}{{ end }}
+  </main>
+
+  {{ partial "command_nav.html" . }}
+  {{ partial "footer.html" . }}
+
+  {{ $cmd := resources.Get "js/command-nav.js" | resources.Minify | resources.Fingerprint }}
+  <script src="{{ $cmd.RelPermalink }}" integrity="{{ $cmd.Data.Integrity }}" defer></script>
+  {{ $linknav := resources.Get "js/link-nav.js" | resources.Minify | resources.Fingerprint }}
+  <script src="{{ $linknav.RelPermalink }}" integrity="{{ $linknav.Data.Integrity }}" defer></script>
+</body>
+</html>
