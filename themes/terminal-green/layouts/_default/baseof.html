@@ -6,8 +6,7 @@
   <title>{{ if .Title }}{{ .Title }} | {{ end }}{{ .Site.Title }}</title>
   {{/* Favicon & PWA basics */}}
   {{ $favicon := .Site.Params.Favicon | default "/img/logo.png" }}
-  <link rel="icon" href="{{ $favicon }}">
-  <link rel="icon" type="image/svg+xml" href="/img/logo.svg">
+  <link rel="icon" type="image/png" href="{{ $favicon }}">
   {{/* If you add sized icons, uncomment the lines below and provide the files in /static/img */}}
   {{/* <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png"> */}}
   {{/* <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png"> */}}
