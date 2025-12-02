@@ -1,10 +1,23 @@
 // Command-line navigation (no external libs)
 (function() {
-  const routes = {
-    ":home": "/",
-    ":help": "/help/",
-    ":q": "/"
-  };
+  // Build routes map from server-provided data (single source of truth: config.toml -> route_data.html)
+  function loadRoutes() {
+    try {
+      const el = document.getElementById('tg-routes');
+      if (!el) throw new Error('no tg-routes element');
+      const raw = el.getAttribute('data-json') || '';
+      if (!raw) throw new Error('empty tg-routes data');
+      const obj = JSON.parse(raw);
+      if (obj && typeof obj === 'object') return obj;
+    } catch(_) {}
+    // Fallback defaults if server data missing
+    return {
+      ":home": "/",
+      ":help": "/help/",
+      ":q": "/"
+    };
+  }
+  const routes = loadRoutes();
 
   function $(id) { return document.getElementById(id); }
 

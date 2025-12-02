@@ -34,6 +34,9 @@
   {{ partial "command_nav.html" . }}
   {{ partial "footer.html" . }}
 
+  {{/* Expose routes from config.toml to JS as window.TG_ROUTES */}}
+  {{ partial "route_data.html" . }}
+
   {{ $cmd := resources.Get "js/command-nav.js" | resources.Minify | resources.Fingerprint }}
   <script src="{{ $cmd.RelPermalink }}" integrity="{{ $cmd.Data.Integrity }}" defer></script>
   {{ $linknav := resources.Get "js/link-nav.js" | resources.Minify | resources.Fingerprint }}

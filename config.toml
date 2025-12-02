@@ -7,30 +7,27 @@ disableKinds = ["taxonomy", "section"]
 [params]
   Favicon = "/img/logo-512x512.png"
 
-  # Configurable command routes (for ":" command and /help page)
-  # You can change, add, or remove items below. Each item has:
+  # SINGLE SOURCE OF TRUTH for command routes (used by ':' command and /help)
+  # Edit only here to add/remove commands. Frontend JS reads these at build time.
+  # Each item has:
   # - cmd  : the command the user types (must start with ":")
   # - path : the URL to navigate to
   # - desc : a short description shown in /help
-  # - showInNav  : if true, show this command in the top navigation (default: true)
   # - showInHelp : if true, show this command in the /help list (default: true)
   [[params.routes]]
   cmd = ":home"
   path = "/"
   desc = "Homepage"
-  showInNav = true
   showInHelp = true
 
   [[params.routes]]
   cmd = ":help"
   path = "/help/"
   desc = "Show the list of available commands"
-  showInNav = true
   showInHelp = true
 
   [[params.routes]]
   cmd = ":q"
   path = "/"
   desc = "Quit (return to homepage)"
-  showInNav = false
   showInHelp = true

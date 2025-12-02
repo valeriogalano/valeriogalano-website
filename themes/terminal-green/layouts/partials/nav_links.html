@@ -1,20 +1,12 @@
-{{- /* Dynamic Vim-style navigation built from params.routes with showInNav flag */ -}}
+{{- /* Build navbar from content (.md) files; no showInNav param required */ -}}
 <nav class="vim-nav" aria-label=":navigation">
-  {{- $routes := .Site.Params.routes -}}
-  {{- if not $routes -}}
-    {{- /* Fallback defaults if no routes configured */ -}}
-    {{- $routes = slice
-      (dict "cmd" ":home"     "path" "/"         "desc" "Homepage"        "showInNav" true)
-      (dict "cmd" ":help"     "path" "/help"     "desc" "Available commands" "showInNav" true)
-    -}}
-  {{- end -}}
+  {{- /* Always include home */ -}}
+  <a href="/">:home</a>
 
-  {{- range $routes -}}
-    {{- /* Default behavior: if showInNav is missing, treat as true */ -}}
-    {{- $has := isset . "showInNav" -}}
-    {{- $show := cond $has (index . "showInNav") true -}}
-    {{- if $show -}}
-      <a href="{{ .path }}">{{ .cmd }}</a>
-    {{- end -}}
+  {{- /* Collect all regular content pages (exclude home). */ -}}
+  {{- $pages := .Site.RegularPages -}}
+  {{- range $pages -}}
+    {{- /* Use the markdown file base name as the ":command" label (e.g., help.md -> :help) */ -}}
+    <a href="{{ .RelPermalink }}">:{{ .File.TranslationBaseName }}</a>
   {{- end -}}
 </nav>
