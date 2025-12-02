@@ -6,7 +6,8 @@
   {{- /* Collect all regular content pages (exclude home). */ -}}
   {{- $pages := .Site.RegularPages -}}
   {{- range $pages -}}
-    {{- /* Use the markdown file base name as the ":command" label (e.g., help.md -> :help) */ -}}
-    <a href="{{ .RelPermalink }}">:{{ .File.TranslationBaseName }}</a>
+    {{- /* Label priority: navLabel (front matter) > Title > file base name; normalized to lowercase for :command style */ -}}
+    {{- $label := lower (or .Params.navLabel (or .Title .File.TranslationBaseName)) -}}
+    <a href="{{ .RelPermalink }}">:{{ $label }}</a>
   {{- end -}}
 </nav>
