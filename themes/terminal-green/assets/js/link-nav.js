@@ -159,7 +159,7 @@
     document.addEventListener('mousedown', (e) => {
       try {
         if (e && e.target && typeof e.target.closest === 'function') {
-          if (e.target.closest('.vim-mobile-keys')) return; // don't clear when using mobile j/k/cmq buttons
+          if (e.target.closest('.vim-mobile-keys')) return; // don't clear when using mobile j/k/cmd buttons
         }
       } catch(_) {}
       clearSelection();

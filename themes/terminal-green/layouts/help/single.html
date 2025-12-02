@@ -12,22 +12,25 @@
       }}
     {{ end }}
 
+    {{/* Render page-specific help content written in content/help.md */}}
+    <div class="tg-help-body">
+      {{ .Content }}
+    </div>
+
     <p>Available commands</p>
-    <ul class="tg-dir">
+    <ul class="tg-cmd-list">
       {{ range $routes }}
         {{/* Default behavior: if showInHelp missing, treat as true */}}
         {{ $has := isset . "showInHelp" }}
         {{ $show := cond $has (index . "showInHelp") true }}
         {{ if not $show }}{{ continue }}{{ end }}
-        <li>
-          <span class="tg-dir-perm">cmd</span>
-          <a class="tg-dir-link" href="{{ .path }}">{{ .cmd }}</a>
-          <span class="tg-dir-date">{{ .desc }}</span>
+        <li class="tg-cmd-item">
+          <code class="tg-cmd-token">{{ .cmd }}</code>
+          <span class="tg-cmd-sep">-</span>
+          <span class="tg-cmd-desc">{{ .desc }}</span>
         </li>
       {{ end }}
     </ul>
-
-    <p style="margin-top:12px;opacity:.9">Tip: press <code>:</code> on any page, type a command (e.g., <code>:about</code>) and press Enter.</p>
   </div>
 </section>
 {{ end }}

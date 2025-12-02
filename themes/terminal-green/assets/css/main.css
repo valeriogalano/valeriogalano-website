@@ -160,7 +160,7 @@ body.cmd-active .tg-footer .vim-status { visibility: hidden; }
     gap: 6px;                    /* compact gap between j and k */
   }
   /* Extra spacing between cmd and the j/k group */
-  .tg-footer #tg-key-cmq { margin-right: 14px; }
+  .tg-footer #tg-key-cmd { margin-right: 14px; }
 }
 
 /* Scrollbar (optional) */
@@ -175,3 +175,19 @@ pre { padding: 8px; overflow: auto; }
 code { padding: 1px 3px; }
 
 /* (removed) Visual cursor overlay styles and blink animation */
+
+/* Help page: align command list descriptions */
+.tg-cmd-list {
+  list-style: disc;
+  margin: 8px 0 0;
+  padding-left: 28px; /* ensure bullets align with site spacing */
+}
+.tg-cmd-item {
+  display: grid;
+  grid-template-columns: max-content 14px 1fr; /* command | separator | description */
+  align-items: baseline;
+  gap: 8px;
+  padding: 2px 0;
+}
+.tg-cmd-token { white-space: nowrap; }
+.tg-cmd-sep { text-align: center; opacity: 0.8; }

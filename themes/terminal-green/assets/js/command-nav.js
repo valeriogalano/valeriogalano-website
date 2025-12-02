@@ -173,7 +173,7 @@
       }
     });
 
-    // Mobile key bar bindings (cmq, j, k)
+    // Mobile key bar bindings (cmd, j, k)
     function dispatchKey(key) {
       try {
         const ev = new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true });
@@ -201,8 +201,8 @@
         if (e.key === 'Enter' || e.key === ' ') handler(e);
       });
     }
-    // cmq opens command input (simulate ':' key press)
-    bindBtn('tg-key-cmq', ':');
+    // cmd opens command input (simulate ':' key press)
+    bindBtn('tg-key-cmd', ':');
     // j/k navigate links
     bindBtn('tg-key-j', 'j');
     bindBtn('tg-key-k', 'k');
