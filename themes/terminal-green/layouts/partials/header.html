@@ -1,0 +1,15 @@
+{{- /* Header with logo top-right and Vim-like bar (ASCII title temporarily disabled) */ -}}
+<header class="tg-header">
+  <div class="tg-logo">
+    <a href="/" aria-label="Home">
+      <img src="/img/logo-512x512.png" alt="Logo" width="72" height="72" />
+    </a>
+  </div>
+
+  {{/* Vim-like bar showing file path and mode */}}
+  <div class="vim-bar">
+    <span class="vim-path">{{ with .File }}{{ .Path }}{{ else }}index.html{{ end }}</span>
+    <span class="vim-sep"> -- </span>
+    <span class="vim-mode">{{ with .Title }}{{ . }}{{ else }}{{ .Site.Title }}{{ end }}</span>
+  </div>
+</header>

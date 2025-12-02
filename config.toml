@@ -1,40 +1,33 @@
 baseurl = "https://valeriogalano.it/"
-title = "Valerio Galano, sviluppo software e Web"
-theme = "hugo-theme-massively"
-languageCode = "it-it"
-disqusShortname = ""
-disableKinds = ["taxonomy", "taxonomyTerm", "section"]
+title = "Valerio Galano, software and web developer"
+theme = "terminal-green"
+languageCode = "en"
+disableKinds = ["taxonomy", "section"]
 
 [params]
   Favicon = "/img/logo-512x512.png"
 
-# Below parameters can be set to override default post settings
-[params.posts]
-#     folderName = "post"
-#     pageSize = "6"
-     featuredPost = false
-#     paginationPages = 2
-#     showFirstLast = false
+  # SINGLE SOURCE OF TRUTH for command routes (used by ':' command and /help)
+  # Edit only here to add/remove commands. Frontend JS reads these at build time.
+  # Each item has:
+  # - cmd  : the command the user types (must start with ":")
+  # - path : the URL to navigate to
+  # - desc : a short description shown in /help
+  # - showInHelp : if true, show this command in the /help list (default: true)
+  [[params.routes]]
+  cmd = ":home"
+  path = "/"
+  desc = "Homepage"
+  showInHelp = true
 
-[privacy]
-  [privacy.disqus]
-    disable = true
-  [privacy.googleAnalytics]
-    anonymizeIP = true
-    disable = true
-    respectDoNotTrack = true
-    useSessionStorage = true
-  [privacy.instagram]
-    disable = true
-    simple = true
-  [privacy.twitter]
-    disable = true
-    enableDNT = true
-    simple = true
-    disableInlineCSS = true
-  [privacy.vimeo]
-    disable = true
-    simple = true
-  [privacy.youtube]
-    disable = true
-    privacyEnhanced = true
+  [[params.routes]]
+  cmd = ":help"
+  path = "/help/"
+  desc = "Show the list of available commands"
+  showInHelp = true
+
+  [[params.routes]]
+  cmd = ":q"
+  path = "/"
+  desc = "Quit (return to homepage)"
+  showInHelp = true

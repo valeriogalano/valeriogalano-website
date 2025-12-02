@@ -1,0 +1,21 @@
+{{- /* Emit a JS object with routes from config.toml so frontend can use a single source of truth */ -}}
+{{- $routes := .Site.Params.routes -}}
+{{- if not $routes -}}
+  {{- /* Provide safe defaults when no routes configured */ -}}
+  {{- $routes = slice
+    (dict "cmd" ":home" "path" "/"      "desc" "Homepage"               "showInHelp" true)
+    (dict "cmd" ":help" "path" "/help/" "desc" "Show the list of commands" "showInHelp" true)
+    (dict "cmd" ":q"    "path" "/"      "desc" "Quit"                    "showInHelp" true)
+  -}}
+{{- end -}}
+
+{{- /* Build a flat map {":cmd": "/path"} for quick lookup by frontend */ -}}
+{{- $map := dict -}}
+{{- range $routes -}}
+  {{- $cmd := .cmd -}}
+  {{- $path := .path -}}
+  {{- if and $cmd $path -}}
+    {{- $map = merge $map (dict $cmd $path) -}}
+  {{- end -}}
+{{- end -}}
+<div id="tg-routes" data-json='{{ $map | jsonify | htmlEscape }}' hidden></div>

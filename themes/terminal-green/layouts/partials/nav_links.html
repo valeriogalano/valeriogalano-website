@@ -1,0 +1,12 @@
+{{- /* Build navbar from content (.md) files; no showInNav param required */ -}}
+<nav class="vim-nav" aria-label=":navigation">
+  {{- /* Always include home */ -}}
+  <a href="/">:home</a>
+
+  {{- /* Collect all regular content pages (exclude home). */ -}}
+  {{- $pages := .Site.RegularPages -}}
+  {{- range $pages -}}
+    {{- /* Use the markdown file base name as the ":command" label (e.g., help.md -> :help) */ -}}
+    <a href="{{ .RelPermalink }}">:{{ .File.TranslationBaseName }}</a>
+  {{- end -}}
+</nav>

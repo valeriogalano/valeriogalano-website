@@ -1,0 +1,21 @@
+{
+  "name": "Terminal Green",
+  "short_name": "Terminal",
+  "start_url": "/",
+  "display": "minimal-ui",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "/img/logo-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/img/logo-200x200.png",
+      "sizes": "200x200",
+      "type": "image/png"
+    }
+  ]
+}

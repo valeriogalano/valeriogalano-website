@@ -1,0 +1,8 @@
+{{ define "main" }}
+<article class="tg-article">
+  <div class="tg-buffer">
+    {{ .Content }}
+  </div>
+  {{/* Home uses its own template so that _index.md content is always rendered */}}
+</article>
+{{ end }}

@@ -1,0 +1,33 @@
+{{ define "main" }}
+<section class="tg-help">
+  <div class="tg-buffer">
+    <h1>Help</h1>
+    {{/* Gather routes from site params; provide sane defaults if empty */}}
+    {{ $routes := .Site.Params.routes }}
+    {{ if not $routes }}
+      {{ $routes = slice
+        (dict "cmd" ":home"     "path" "/"         "desc" "Homepage" "showInHelp" true)
+        (dict "cmd" ":help"     "path" "/help"     "desc" "Show this list" "showInHelp" true)
+        (dict "cmd" ":q"        "path" "/"         "desc" "Quit (return to homepage)" "showInHelp" true)
+      }}
+    {{ end }}
+
+    <p>Available commands</p>
+    <ul class="tg-dir">
+      {{ range $routes }}
+        {{/* Default behavior: if showInHelp missing, treat as true */}}
+        {{ $has := isset . "showInHelp" }}
+        {{ $show := cond $has (index . "showInHelp") true }}
+        {{ if not $show }}{{ continue }}{{ end }}
+        <li>
+          <span class="tg-dir-perm">cmd</span>
+          <a class="tg-dir-link" href="{{ .path }}">{{ .cmd }}</a>
+          <span class="tg-dir-date">{{ .desc }}</span>
+        </li>
+      {{ end }}
+    </ul>
+
+    <p style="margin-top:12px;opacity:.9">Tip: press <code>:</code> on any page, type a command (e.g., <code>:about</code>) and press Enter.</p>
+  </div>
+</section>
+{{ end }}
