@@ -155,7 +155,15 @@
     collectLinks();
     document.addEventListener('keydown', onKey, true);
     // Clear any link selection on any mouse click anywhere in the page
-    document.addEventListener('mousedown', () => clearSelection(), true);
+    // Clear selection on generic mouse interactions, but ignore taps on the mobile key bar
+    document.addEventListener('mousedown', (e) => {
+      try {
+        if (e && e.target && typeof e.target.closest === 'function') {
+          if (e.target.closest('.vim-mobile-keys')) return; // don't clear when using mobile j/k/cmq buttons
+        }
+      } catch(_) {}
+      clearSelection();
+    }, true);
     // Re-collect on resizes and DOM mutations within #content (helps for /help and partial rerenders)
     const ro = new ResizeObserver(() => collectLinks());
     const content = document.getElementById('content') || document.body;

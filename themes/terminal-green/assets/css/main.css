@@ -123,6 +123,46 @@ a:focus { outline: none; }
 /* When command is active, hide the status text so input visually replaces it */
 body.cmd-active .tg-footer .vim-status { visibility: hidden; }
 
+/* Mobile key bar (shown on small screens instead of the tip) */
+.vim-mobile-keys {
+  display: none;
+  gap: 10px;
+  align-items: center;
+  padding-top: 6px;
+}
+.vim-key {
+  display: inline-block;
+  color: var(--green);
+  border: 1px solid var(--g2);
+  background: #000;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+}
+.vim-key:focus { outline: 1px dotted var(--green); outline-offset: 2px; }
+
+/* Show the key bar on small screens and hide only the tip text (keep the counter) */
+@media (max-width: 768px) {
+  /* Put counter and keys on the same row */
+  .tg-footer { display: flex; align-items: center; }
+  /* Keep only the tip hidden, leave the counter visible */
+  .tg-footer .vim-status .vim-tip { display: none; }
+  /* Ensure the status (counter) aligns nicely on the left */
+  .tg-footer .vim-status { display: flex; align-items: center; }
+  /* Show keys on the same line and push them to the right */
+  .tg-footer .vim-mobile-keys {
+    display: flex;
+    margin-left: auto;           /* pushes keys to the far right */
+    justify-content: flex-end;   /* align j/k flush right */
+    padding-top: 0;              /* same baseline as counter */
+    gap: 6px;                    /* compact gap between j and k */
+  }
+  /* Extra spacing between cmd and the j/k group */
+  .tg-footer #tg-key-cmq { margin-right: 14px; }
+}
+
 /* Scrollbar (optional) */
 * { scrollbar-width: thin; scrollbar-color: var(--green) var(--black); }
 ::-webkit-scrollbar { width: 10px; height: 10px; }

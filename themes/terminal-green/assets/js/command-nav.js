@@ -172,6 +172,40 @@
         input.blur();
       }
     });
+
+    // Mobile key bar bindings (cmq, j, k)
+    function dispatchKey(key) {
+      try {
+        const ev = new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true });
+        document.dispatchEvent(ev);
+      } catch(_) {
+        // Fallback for very old browsers
+        const ev = document.createEvent('KeyboardEvent');
+        try { ev.initKeyboardEvent('keydown', true, true, window, key, 0, '', false, ''); } catch(_) {}
+        document.dispatchEvent(ev);
+      }
+    }
+    function bindBtn(id, keyOrFn) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const handler = (e) => {
+        if (typeof keyOrFn === 'string') {
+          dispatchKey(keyOrFn);
+        } else if (typeof keyOrFn === 'function') {
+          keyOrFn();
+        }
+        e.preventDefault();
+      };
+      el.addEventListener('click', handler);
+      el.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') handler(e);
+      });
+    }
+    // cmq opens command input (simulate ':' key press)
+    bindBtn('tg-key-cmq', ':');
+    // j/k navigate links
+    bindBtn('tg-key-j', 'j');
+    bindBtn('tg-key-k', 'k');
   }
 
   if (document.readyState === 'loading') {
