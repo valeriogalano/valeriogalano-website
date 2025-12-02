@@ -56,7 +56,8 @@ a:focus { outline: none; }
 .tg-content { padding: 16px; }
 .tg-article-header { margin-bottom: 12px; }
 .tg-buffer {
-  padding-left: 12px;
+  /* Align content with header/footer (both use 16px side padding) */
+  padding-left: 0;
   /* Safety bottom padding so the last line never sits under the fixed footer */
   padding-bottom: 36px;
 }
