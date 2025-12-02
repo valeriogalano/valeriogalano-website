@@ -1,23 +1,25 @@
 ---
 title: "Homepage"
 ---
-\# Valerio Galano\
+# Valerio Galano
 Software and web developer
 
-\## Main technologies\
-PHP, Laravel, WordPress, Microsoft Azure
+## Main technologies
+PHP |
+Laravel |
+WordPress |
+Hugo |
+Microsoft Azure 
 
-\## Contact \
+## Contact
 [v.galano@daredevel.com](v.galano@daredevel.com)
 
-\## Daredevel [blog]\
-[https://daredevel.com](https://daredevel.com)
+## Websites
+[Pensieri in codice](https://pensieriincodice.it) |
+[Daredevel](https://daredevel.com)
 
-\## Pensieri in codice [podcast]\
-[https://pensieriincodice.it](https://pensieriincodice.it)
-
-\## Social accounts\
-[Telegram](https://t.me/valeriogalano), 
-[LinkedIn](https://www.linkedin.com/in/valeriogalano), 
-[Mastodon](https://mastodon.uno/@valeriogalano), 
+## Social accounts
+[Telegram](https://t.me/valeriogalano) | 
+[LinkedIn](https://www.linkedin.com/in/valeriogalano) |
+[Mastodon](https://mastodon.uno/@valeriogalano) | 
 [GitHub](https://github.com/valeriogalano)
