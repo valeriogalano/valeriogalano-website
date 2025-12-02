@@ -22,6 +22,7 @@
   function $(id) { return document.getElementById(id); }
 
   function wrapper() { return document.querySelector('.cmd-wrapper'); }
+  let lastOpenedAt = 0;
   function openCmd() {
     const w = wrapper();
     if (!w) return;
@@ -29,6 +30,8 @@
       w.classList.add('active');
       // mark body as command-active so UI can swap footer status with input
       document.body.classList.add('cmd-active');
+      // guard to avoid immediately closing from the same tap/click that opened it (mobile)
+      lastOpenedAt = Date.now();
     }
   }
   function closeCmd() {
@@ -172,6 +175,26 @@
         input.blur();
       }
     });
+
+    // Close when tapping/clicking anywhere outside the command area
+    function isInsideCmd(el) {
+      const w = wrapper();
+      return !!(w && (el === w || w.contains(el)));
+    }
+    function outsideCloseHandler(e) {
+      // If we just opened, ignore the very next outside event to prevent immediate close
+      if (Date.now() - lastOpenedAt < 250) return;
+      const w = wrapper();
+      if (!w || !w.classList.contains('active')) return;
+      const target = e.target;
+      // Keep open if interacting with the input/cmd area
+      if (target === input || isInsideCmd(target)) return;
+      closeCmd();
+      // blur input if focused
+      if (document.activeElement === input) input.blur();
+    }
+    // Use pointerdown to react fast on touch devices
+    document.addEventListener('pointerdown', outsideCloseHandler, { passive: true });
 
     // Mobile key bar bindings (cmd, j, k)
     function dispatchKey(key) {

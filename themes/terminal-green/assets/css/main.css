@@ -122,6 +122,8 @@ a:focus { outline: none; }
 .vim-status { color: #00cc55; opacity: 0.9; }
 /* When command is active, hide the status text so input visually replaces it */
 body.cmd-active .tg-footer .vim-status { visibility: hidden; }
+/* When command is active, hide the mobile keys bar (cmd, j, k) */
+body.cmd-active .tg-footer .vim-mobile-keys { display: none !important; }
 
 /* Mobile key bar (shown on small screens instead of the tip) */
 .vim-mobile-keys {
@@ -159,6 +161,8 @@ body.cmd-active .tg-footer .vim-status { visibility: hidden; }
     padding-top: 0;              /* same baseline as counter */
     gap: 6px;                    /* compact gap between j and k */
   }
+  /* Ensure they are hidden while command mode is active */
+  body.cmd-active .tg-footer .vim-mobile-keys { display: none !important; }
   /* Extra spacing between cmd and the j/k group */
   .tg-footer #tg-key-cmd { margin-right: 14px; }
 }
