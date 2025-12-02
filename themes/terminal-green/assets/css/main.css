@@ -49,8 +49,9 @@ a:focus { outline: none; }
 .vim-bar .vim-mode { color: var(--green); font-weight: 600; }
 
 .vim-nav { padding: 6px 16px; border-bottom: 1px solid var(--g2); }
-.vim-nav a { margin-right: 16px; border-bottom: 1px dotted var(--g4); padding-bottom: 2px; }
-.vim-nav a:hover { border-bottom-style: solid; }
+.vim-nav a { margin-right: 16px; border-bottom: none; padding-bottom: 0; }
+/* Show underline only on hover/focus via text-decoration, not border */
+.vim-nav a:hover, .vim-nav a:focus { border-bottom: none; text-decoration: underline; }
 
 .tg-content { padding: 16px; }
 .tg-article-header { margin-bottom: 12px; }
