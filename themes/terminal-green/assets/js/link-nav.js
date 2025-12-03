@@ -6,6 +6,56 @@
   let links = [];
   let idx = -1; // no preselection until user presses j/k
 
+  // --- Footer loading indicator (replaces selected link in footer) -----------
+  function showLoading() {
+    try {
+      const el = document.getElementById('tg-link-target');
+      if (!el) return;
+      el.setAttribute('aria-live', 'polite');
+      el.setAttribute('aria-busy', 'true');
+      el.innerHTML = '<span class="tg-loading-text">loading<span class="d1">.</span><span class="d2">.</span><span class="d3">.</span></span>';
+    } catch(_) {}
+  }
+
+  function isModifiedClick(e) {
+    return !!(e && (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button === 1));
+  }
+
+  function isHashOnly(href) {
+    if (!href) return false;
+    const t = href.trim();
+    return t.startsWith('#');
+  }
+
+  function shouldShowLoadingForLink(a, e) {
+    if (!a) return false;
+    const target = (a.getAttribute('target') || '').toLowerCase();
+    if (target === '_blank') return false;
+    if (isModifiedClick(e)) return false;
+    const href = a.getAttribute('href') || '';
+    if (!href) return false;
+    if (isHashOnly(href)) return false; // same-page anchor
+    return true; // navigating in same tab
+  }
+
+  function navigateWithDelay(a, delayMs) {
+    if (!a) return;
+    const href = a.getAttribute('href');
+    if (!href) return;
+    const target = (a.getAttribute('target') || '').toLowerCase();
+    if (target === '_blank') {
+      // Do not delay new-tab navigations
+      try { window.open(href, '_blank'); } catch(_) { /* noop */ }
+      return;
+    }
+    // Same-tab navigation: show loading, delay to let animation be visible
+    showLoading();
+    const ms = typeof delayMs === 'number' && delayMs >= 0 ? delayMs : 500;
+    setTimeout(() => {
+      try { window.location.assign(href); } catch(_) { window.location.href = href; }
+    }, ms);
+  }
+
   function setStatus(cur, total) {
     try {
       const pos = document.getElementById('tg-pos');
@@ -29,6 +79,8 @@
       if (!el) return;
       // Show nothing when empty/undefined
       const t = (text || '').trim();
+      // ensure any previous loading state is cleared
+      el.removeAttribute('aria-busy');
       el.textContent = t;
       if (t) {
         el.setAttribute('href', t);
@@ -156,12 +208,8 @@
     if (target === '_blank') {
       window.open(href, '_blank');
     } else {
-      // Prefer native click to preserve SPA behaviors if any
-      if (typeof a.click === 'function') {
-        a.click();
-      } else {
-        window.location.assign(href);
-      }
+      // Delay same-tab navigation to show loading animation
+      navigateWithDelay(a, 500);
     }
     if (e) e.preventDefault();
   }
@@ -238,6 +286,20 @@
     // Initial collection without selecting any link
     collectLinks();
     document.addEventListener('keydown', onKey, true);
+    // Show loader on normal link clicks (same-tab navigations)
+    document.addEventListener('click', function(e) {
+      const t = e.target;
+      if (!t) return;
+      // Find nearest anchor
+      const a = t.closest ? t.closest('a[href]') : null;
+      if (!a) return;
+      if (!shouldShowLoadingForLink(a, e)) return;
+      // We will intentionally delay navigation, so prevent default and navigate manually
+      e.preventDefault();
+      // mark as handled by delayed nav to avoid any restoration branches
+      try { e.__tgDelayedNav = true; } catch(_) {}
+      navigateWithDelay(a, 500);
+    }, true);
     // Do not clear selection on page clicks (desktop or mobile) per requirement
     // Re-collect on resizes and DOM mutations within #content (helps for /help and partial rerenders)
     const ro = new ResizeObserver(() => collectLinks());

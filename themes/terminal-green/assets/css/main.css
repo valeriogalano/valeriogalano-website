@@ -144,6 +144,13 @@ body.cmd-active .tg-footer .vim-status { visibility: hidden; }
   display: block;
   min-height: 1.4em; /* matches body line-height */
 }
+/* While loading, do not underline the footer text even on hover/focus */
+.vim-link-target[aria-busy="true"],
+.vim-link-target[aria-busy="true"]:hover,
+.vim-link-target[aria-busy="true"]:focus {
+  text-decoration: none;
+  border-bottom: none;
+}
 /* Hide link target while command mode is active */
 body.cmd-active .tg-footer .vim-link-target { display: none; }
 /* When command is active, hide the mobile keys bar (cmd, j, k) */
@@ -209,6 +216,33 @@ pre { padding: 8px; overflow: auto; }
 code { padding: 1px 3px; }
 
 /* (removed) Visual cursor overlay styles and blink animation */
+
+/* Loading overlay */
+#tg-loading {
+  position: fixed;
+  inset: 0;
+  display: none;               /* hidden by default */
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.85);
+  color: var(--green);
+  z-index: 2000;               /* above everything */
+  text-shadow: 0 0 8px var(--green);
+}
+#tg-loading.active { display: flex; }
+.tg-loading-text {
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+/* animate three dots: ., .., ... looping */
+@keyframes tg-dot {
+  0% { opacity: 0.2; }
+  20% { opacity: 1; }
+  100% { opacity: 0.2; }
+}
+.tg-loading-text .d1 { animation: tg-dot 1.2s infinite ease-in-out; animation-delay: 0s; }
+.tg-loading-text .d2 { animation: tg-dot 1.2s infinite ease-in-out; animation-delay: 0.2s; }
+.tg-loading-text .d3 { animation: tg-dot 1.2s infinite ease-in-out; animation-delay: 0.4s; }
 
 /* Help page: align command list descriptions */
 .tg-cmd-list {
