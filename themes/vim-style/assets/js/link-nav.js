@@ -58,9 +58,13 @@
 
   function setStatus(cur, total) {
     try {
+      // If total has two digits (10–99), pad the current index to two digits as well
+      const shouldPadTwo = (typeof total === 'number' && total >= 10 && total < 100);
+      const curStr = shouldPadTwo ? String(cur).padStart(2, '0') : String(cur);
+
       const pos = document.getElementById('vs-pos');
       if (pos) {
-        pos.textContent = `${cur}:${total}`;
+        pos.textContent = `${curStr}:${total}`;
         return;
       }
       // Fallback: try to update the text of .vim-status if #vs-pos is missing
@@ -68,7 +72,7 @@
       if (vs) {
         const txt = vs.textContent || '';
         const rest = txt.replace(/^\s*\d+[:,]\d+\s*/, '');
-        vs.textContent = `${cur}:${total}    ${rest}`;
+        vs.textContent = `${curStr}:${total}    ${rest}`;
       }
     } catch(_) {}
   }
