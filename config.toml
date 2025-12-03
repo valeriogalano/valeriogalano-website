@@ -5,7 +5,7 @@ languageCode = "en"
 disableKinds = ["taxonomy", "section"]
 
 [params]
-  Favicon = "/img/logo-512x512.png"
+  Favicon = "/img/logo.png"
 
   # SINGLE SOURCE OF TRUTH for command routes (used by ':' command and /help)
   # Edit only here to add/remove commands. Frontend JS reads these at build time.
