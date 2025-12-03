@@ -23,13 +23,35 @@
     } catch(_) {}
   }
 
-  function setLinkTarget(text) {
+  function setLinkTarget(text, target) {
     try {
       const el = document.getElementById('tg-link-target');
       if (!el) return;
       // Show nothing when empty/undefined
       const t = (text || '').trim();
       el.textContent = t;
+      if (t) {
+        el.setAttribute('href', t);
+        const tgt = (target || '').trim();
+        if (tgt) {
+          el.setAttribute('target', tgt);
+          // security best practice when opening new tabs
+          if (tgt === '_blank') el.setAttribute('rel', 'noopener noreferrer');
+        } else {
+          el.removeAttribute('target');
+          el.removeAttribute('rel');
+        }
+        // Make sure it's visible and interactive when a link exists
+        el.removeAttribute('aria-hidden');
+        try { el.style.pointerEvents = ''; } catch(_) {}
+      } else {
+        // Remove href so it is not focusable/clickable when empty
+        el.removeAttribute('href');
+        el.removeAttribute('target');
+        el.removeAttribute('rel');
+        el.setAttribute('aria-hidden', 'true');
+        try { el.style.pointerEvents = 'none'; } catch(_) {}
+      }
     } catch(_) {}
   }
 
@@ -83,9 +105,9 @@
     // Update link target display
     if (idx >= 0 && idx < links.length) {
       const a = links[idx];
-      setLinkTarget(a.getAttribute('href') || '');
+      setLinkTarget(a.getAttribute('href') || '', a.getAttribute('target') || '');
     } else {
-      setLinkTarget('');
+      setLinkTarget('', '');
     }
   }
 
@@ -97,7 +119,7 @@
     idx = -1;
     clearHighlight();
     setStatus(0, links.length);
-    setLinkTarget('');
+    setLinkTarget('', '');
   }
 
   function highlight() {
@@ -109,7 +131,7 @@
     try { a.focus({ preventScroll: true }); } catch(_) { try { a.focus(); } catch(_) {} }
     // Update link target BEFORE measuring footer and scrolling,
     // so the increased footer height is accounted for on first selection
-    setLinkTarget(a.getAttribute('href') || '');
+    setLinkTarget(a.getAttribute('href') || '', a.getAttribute('target') || '');
     // Ensure the link is visible above the fixed footer
     ensureVisibleWithFooter(a);
     setStatus(idx + 1, links.length);
