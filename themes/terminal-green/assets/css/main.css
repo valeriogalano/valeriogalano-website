@@ -43,7 +43,7 @@ body.tg-body {
 }
 
 /* Slight CRT glow */
-.crt-glow, .vim-nav a, .vim-bar, .ascii-title, .vim-status {
+.crt-glow, .vim-nav a, .vim-bar, .vim-status {
   text-shadow: 0 0 8px var(--green);
 }
 
@@ -61,9 +61,6 @@ a:focus { outline: none; }
 .tg-logo { position: absolute; right: 16px; top: 16px; }
 .tg-logo img { display: block; max-width: 80px; height: auto; filter: drop-shadow(0 0 8px var(--green)); }
 
-.tg-ascii { padding-right: 110px; display:none; }
-.ascii-title { margin: 0; color: rgba(0, 204, 85, 0.9); font-size: 14px; line-height: 1.1; white-space: pre; }
-
 .vim-bar { margin-top: 8px; border-top: 1px solid var(--g2); padding-top: 6px; color: rgba(0, 204, 85, 0.9); }
 .vim-bar .vim-path { color: rgba(0, 204, 85, 0.9); }
 .vim-bar .vim-sep { color: rgba(0, 204, 85, 0.9); }
@@ -75,7 +72,6 @@ a:focus { outline: none; }
 .vim-nav a:hover, .vim-nav a:focus { border-bottom: none; text-decoration: underline; }
 
 .tg-content { padding: 16px 16px 40px; }
-.tg-article-header { margin-bottom: 12px; }
 .tg-buffer {
   /* Align content with header/footer (both use 16px side padding) */
   padding-left: 0;
@@ -101,13 +97,6 @@ a:focus { outline: none; }
   /* Keep focus highlight crisp and readable */
   text-shadow: none !important;
 }
-
-/* Directory listing */
-.tg-dir { list-style: none; padding: 0; margin: 0; }
-.tg-dir li { padding: 4px 0; border-bottom: 1px dotted var(--g2); display: flex; gap: 12px; align-items: baseline; }
-.tg-dir-perm { color: var(--green); opacity: 0.7; }
-.tg-dir-link { color: rgba(0, 204, 85, 0.9); }
-.tg-dir-date { margin-left: auto; opacity: 0.8; }
 
 /* Command line navigation */
 /* Replace the footer statusline when active */

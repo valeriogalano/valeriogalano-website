@@ -84,8 +84,6 @@
     const nav = document.querySelector('.vim-nav');
     if (nav) cands.push(...nav.querySelectorAll('a[href]'));
     if (scopePrimary) cands.push(...scopePrimary.querySelectorAll('a[href]'));
-    const helpList = content.querySelector('.tg-dir');
-    if (helpList) cands.push(...helpList.querySelectorAll('a[href]'));
     // Always add any remaining anchors under #content
     cands.push(...content.querySelectorAll('a[href]'));
 
