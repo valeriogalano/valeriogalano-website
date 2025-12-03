@@ -1,5 +1,5 @@
 // In-content link navigation with j/k + Enter
-// - Restricts navigation to links inside the main content (.tg-buffer within #content)
+// - Restricts navigation to links inside the main content (.vs-buffer within #content)
 // - Highlights the active link
 // - Opens the active link on Enter
 (function() {
@@ -9,11 +9,11 @@
   // --- Footer loading indicator (replaces selected link in footer) -----------
   function showLoading() {
     try {
-      const el = document.getElementById('tg-link-target');
+      const el = document.getElementById('vs-link-target');
       if (!el) return;
       el.setAttribute('aria-live', 'polite');
       el.setAttribute('aria-busy', 'true');
-      el.innerHTML = '<span class="tg-loading-text">loading<span class="d1">.</span><span class="d2">.</span><span class="d3">.</span></span>';
+      el.innerHTML = '<span class="vs-loading-text">loading<span class="d1">.</span><span class="d2">.</span><span class="d3">.</span></span>';
     } catch(_) {}
   }
 
@@ -58,12 +58,12 @@
 
   function setStatus(cur, total) {
     try {
-      const pos = document.getElementById('tg-pos');
+      const pos = document.getElementById('vs-pos');
       if (pos) {
         pos.textContent = `${cur}:${total}`;
         return;
       }
-      // Fallback: try to update the text of .vim-status if #tg-pos is missing
+      // Fallback: try to update the text of .vim-status if #vs-pos is missing
       const vs = document.querySelector('.vim-status');
       if (vs) {
         const txt = vs.textContent || '';
@@ -75,7 +75,7 @@
 
   function setLinkTarget(text, target) {
     try {
-      const el = document.getElementById('tg-link-target');
+      const el = document.getElementById('vs-link-target');
       if (!el) return;
       // Show nothing when empty/undefined
       const t = (text || '').trim();
@@ -130,7 +130,7 @@
   function collectLinks() {
     // Collect from navbar first so that initial j/k starts there
     const content = document.getElementById('content') || document.body;
-    const scopePrimary = content.querySelector('.tg-buffer');
+    const scopePrimary = content.querySelector('.vs-buffer');
     // Gather candidates, navbar first
     const cands = [];
     const nav = document.querySelector('.vim-nav');
@@ -141,7 +141,7 @@
 
     const newLinks = uniqueByRef(cands).filter(a => isVisible(a));
     // Remove previous highlights from old list
-    if (links && links.length) links.forEach(a => a.classList.remove('tg-link-focus'));
+    if (links && links.length) links.forEach(a => a.classList.remove('vs-link-focus'));
     links = newLinks;
     // Preserve current selection if still valid, otherwise no selection
     if (!(idx >= 0 && idx < links.length)) {
@@ -162,7 +162,7 @@
   }
 
   function clearHighlight() {
-    links.forEach(a => a.classList.remove('tg-link-focus'));
+    links.forEach(a => a.classList.remove('vs-link-focus'));
   }
 
   function clearSelection() {
@@ -176,7 +176,7 @@
     clearHighlight();
     if (idx < 0 || idx >= links.length) return;
     const a = links[idx];
-    a.classList.add('tg-link-focus');
+    a.classList.add('vs-link-focus');
     // Use native focus for accessibility but avoid default focus ring by CSS override
     try { a.focus({ preventScroll: true }); } catch(_) { try { a.focus(); } catch(_) {} }
     // Update link target BEFORE measuring footer and scrolling,
@@ -232,7 +232,7 @@
       e.preventDefault();
     } else if (e.key === 'Enter') {
       // Only act if a link is highlighted
-      const hasFocus = idx >= 0 && idx < links.length && links[idx].classList.contains('tg-link-focus');
+      const hasFocus = idx >= 0 && idx < links.length && links[idx].classList.contains('vs-link-focus');
       if (hasFocus) {
         openActive(e);
       }
@@ -242,7 +242,7 @@
   // --- Scrolling helpers ----------------------------------------------------
   function getFooterHeight() {
     // Prefer actual footer height when present
-    const f = document.querySelector('.tg-footer');
+    const f = document.querySelector('.vs-footer');
     if (f && f.offsetHeight) return f.offsetHeight;
     // Fallback to CSS var --footer-h if set
     try {

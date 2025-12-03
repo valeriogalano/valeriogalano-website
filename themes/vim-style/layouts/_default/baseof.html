@@ -57,11 +57,11 @@
   {{ $css := resources.Get "css/main.css" | resources.Minify | resources.Fingerprint }}
   <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}" />
 </head>
-<body class="tg-body">
+<body class="vs-body">
   {{ partial "header.html" . }}
   {{ partial "nav_links.html" . }}
 
-  <main id="content" class="tg-content">
+  <main id="content" class="vs-content">
     {{ block "main" . }}{{ end }}
   </main>
 

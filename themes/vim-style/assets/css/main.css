@@ -13,7 +13,7 @@ html, body {
   height: 100%;
 }
 
-body.tg-body {
+body.vs-body {
   background: var(--black);
   /* Match the Tip text color and opacity (#00cc55 at ~90%).
      Use alpha on the text color so links/buttons with their own
@@ -35,7 +35,7 @@ body.tg-body {
 
 /* Prefer dynamic footer height when CSS max() is supported */
 @supports (padding: max(0px)) {
-  body.tg-body {
+  body.vs-body {
     /* Ensure footer never overlaps content: reserve at least 150px,
        or the dynamic footer height when available. */
     padding-bottom: max(var(--footer-h), 150px);
@@ -57,9 +57,9 @@ a { color: rgba(0, 204, 85, 0.9); text-decoration: none; }
 a:hover, a:focus { text-decoration: underline; }
 a:focus { outline: none; }
 
-.tg-header { position: relative; padding: 16px 16px 8px; border-bottom: 1px solid var(--g2); }
-.tg-logo { position: absolute; right: 16px; top: 16px; }
-.tg-logo img { display: block; max-width: 80px; height: auto; filter: drop-shadow(0 0 8px var(--green)); }
+.vs-header { position: relative; padding: 16px 16px 8px; border-bottom: 1px solid var(--g2); }
+.vs-logo { position: absolute; right: 16px; top: 16px; }
+.vs-logo img { display: block; max-width: 80px; height: auto; filter: drop-shadow(0 0 8px var(--green)); }
 
 .vim-bar { margin-top: 8px; border-top: 1px solid var(--g2); padding-top: 6px; color: rgba(0, 204, 85, 0.9); }
 .vim-bar .vim-path { color: rgba(0, 204, 85, 0.9); }
@@ -71,8 +71,8 @@ a:focus { outline: none; }
 /* Show underline only on hover/focus via text-decoration, not border */
 .vim-nav a:hover, .vim-nav a:focus { border-bottom: none; text-decoration: underline; }
 
-.tg-content { padding: 16px 16px 40px; }
-.tg-buffer {
+.vs-content { padding: 16px 16px 40px; }
+.vs-buffer {
   /* Align content with header/footer (both use 16px side padding) */
   padding-left: 0;
   /* Safety bottom padding so the last line never sits under the fixed footer */
@@ -80,7 +80,7 @@ a:focus { outline: none; }
 }
 
 /* In-content link keyboard focus highlight (j/k navigation) */
-.tg-link-focus {
+.vs-link-focus {
   /* High-contrast selection: black text on green background */
   color: var(--black) !important;
   background: var(--green);
@@ -134,10 +134,10 @@ a:focus { outline: none; }
 /* No input glow for command mode */
 
 /* Footer statusline - fixed to bottom like Vim statusline */
-.tg-footer { position: fixed; left: 0; right: 0; bottom: 0; border-top: 1px solid var(--g2); padding: 10px 16px 20px; background: var(--black); z-index: 800; }
+.vs-footer { position: fixed; left: 0; right: 0; bottom: 0; border-top: 1px solid var(--g2); padding: 10px 16px 20px; background: var(--black); z-index: 800; }
 .vim-status { color: #00cc55; opacity: 0.9; }
 /* When command is active, hide the status text so input visually replaces it */
-body.cmd-active .tg-footer .vim-status { visibility: hidden; }
+body.cmd-active .vs-footer .vim-status { visibility: hidden; }
 /* Selected link target shown under the status/tip/buttons */
 .vim-link-target {
   margin-top: 6px;
@@ -161,9 +161,9 @@ body.cmd-active .tg-footer .vim-status { visibility: hidden; }
   border-bottom: none;
 }
 /* Hide link target while command mode is active */
-body.cmd-active .tg-footer .vim-link-target { display: none; }
+body.cmd-active .vs-footer .vim-link-target { display: none; }
 /* When command is active, hide the mobile keys bar (cmd, j, k) */
-body.cmd-active .tg-footer .vim-mobile-keys { display: none !important; }
+body.cmd-active .vs-footer .vim-mobile-keys { display: none !important; }
 
 /* Mobile key bar (shown on small screens instead of the tip) */
 .vim-mobile-keys {
@@ -190,13 +190,13 @@ body.cmd-active .tg-footer .vim-mobile-keys { display: none !important; }
 /* Show the key bar on small screens and hide only the tip text (keep the counter) */
 @media (max-width: 768px) {
   /* Put counter and keys on the same row */
-  .tg-footer { display: flex; align-items: center; flex-wrap: wrap; }
+  .vs-footer { display: flex; align-items: center; flex-wrap: wrap; }
   /* Keep only the tip hidden, leave the counter visible */
-  .tg-footer .vim-status .vim-tip { display: none; }
+  .vs-footer .vim-status .vim-tip { display: none; }
   /* Ensure the status (counter) aligns nicely on the left */
-  .tg-footer .vim-status { display: flex; align-items: center; }
+  .vs-footer .vim-status { display: flex; align-items: center; }
   /* Show keys on the same line and push them to the right */
-  .tg-footer .vim-mobile-keys {
+  .vs-footer .vim-mobile-keys {
     display: flex;
     margin-left: auto;           /* pushes keys to the far right */
     justify-content: flex-end;   /* align j/k flush right */
@@ -204,13 +204,13 @@ body.cmd-active .tg-footer .vim-mobile-keys { display: none !important; }
     gap: 6px;                    /* compact gap between j and k */
   }
   /* Make link target occupy full width on the second line */
-  .tg-footer .vim-link-target { flex-basis: 100%; margin-top: 6px; }
+  .vs-footer .vim-link-target { flex-basis: 100%; margin-top: 6px; }
   /* Ensure they are hidden while command mode is active */
-  body.cmd-active .tg-footer .vim-mobile-keys { display: none !important; }
+  body.cmd-active .vs-footer .vim-mobile-keys { display: none !important; }
   /* Extra spacing between Enter and the j/k group */
-  .tg-footer #tg-key-enter { margin-right: 14px; }
+  .vs-footer #vs-key-enter { margin-right: 14px; }
   /* Extra spacing between cmd and Enter */
-  .tg-footer #tg-key-cmd { margin-right: 14px; }
+  .vs-footer #vs-key-cmd { margin-right: 14px; }
 }
 
 /* Scrollbar (optional) */
@@ -227,7 +227,7 @@ code { padding: 1px 3px; }
 /* (removed) Visual cursor overlay styles and blink animation */
 
 /* Loading overlay */
-#tg-loading {
+#vs-loading {
   position: fixed;
   inset: 0;
   display: none;               /* hidden by default */
@@ -238,33 +238,33 @@ code { padding: 1px 3px; }
   z-index: 2000;               /* above everything */
   text-shadow: 0 0 8px var(--green);
 }
-#tg-loading.active { display: flex; }
-.tg-loading-text {
+#vs-loading.active { display: flex; }
+.vs-loading-text {
   font-weight: 600;
   letter-spacing: 1px;
 }
 /* animate three dots: ., .., ... looping */
-@keyframes tg-dot {
+@keyframes vs-dot {
   0% { opacity: 0.2; }
   20% { opacity: 1; }
   100% { opacity: 0.2; }
 }
-.tg-loading-text .d1 { animation: tg-dot 1.2s infinite ease-in-out; animation-delay: 0s; }
-.tg-loading-text .d2 { animation: tg-dot 1.2s infinite ease-in-out; animation-delay: 0.2s; }
-.tg-loading-text .d3 { animation: tg-dot 1.2s infinite ease-in-out; animation-delay: 0.4s; }
+.vs-loading-text .d1 { animation: vs-dot 1.2s infinite ease-in-out; animation-delay: 0s; }
+.vs-loading-text .d2 { animation: vs-dot 1.2s infinite ease-in-out; animation-delay: 0.2s; }
+.vs-loading-text .d3 { animation: vs-dot 1.2s infinite ease-in-out; animation-delay: 0.4s; }
 
 /* Help page: align command list descriptions */
-.tg-cmd-list {
+.vs-cmd-list {
   list-style: disc;
   margin: 8px 0 0;
   padding-left: 28px; /* ensure bullets align with site spacing */
 }
-.tg-cmd-item {
+.vs-cmd-item {
   display: grid;
   grid-template-columns: max-content 14px 1fr; /* command | separator | description */
   align-items: baseline;
   gap: 8px;
   padding: 2px 0;
 }
-.tg-cmd-token { white-space: nowrap; }
-.tg-cmd-sep { text-align: center; opacity: 0.8; }
+.vs-cmd-token { white-space: nowrap; }
+.vs-cmd-sep { text-align: center; opacity: 0.8; }

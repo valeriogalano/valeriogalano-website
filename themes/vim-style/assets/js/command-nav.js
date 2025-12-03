@@ -3,10 +3,10 @@
   // Build routes map from server-provided data (single source of truth: config.toml -> route_data.html)
   function loadRoutes() {
     try {
-      const el = document.getElementById('tg-routes');
-      if (!el) throw new Error('no tg-routes element');
+      const el = document.getElementById('vs-routes');
+      if (!el) throw new Error('no vs-routes element');
       const raw = el.getAttribute('data-json') || '';
-      if (!raw) throw new Error('empty tg-routes data');
+      if (!raw) throw new Error('empty vs-routes data');
       const obj = JSON.parse(raw);
       if (obj && typeof obj === 'object') return obj;
     } catch(_) {}
@@ -26,13 +26,13 @@
   // --- Footer loading indicator (same visual used for link navigation) ------
   function showLoadingFooter() {
     try {
-      const el = document.getElementById('tg-link-target');
+      const el = document.getElementById('vs-link-target');
       if (!el) return;
       // clear any previous error state
       try { el.classList.remove('err'); } catch(_) {}
       el.setAttribute('aria-live', 'polite');
       el.setAttribute('aria-busy', 'true');
-      el.innerHTML = '<span class="tg-loading-text">loading<span class="d1">.</span><span class="d2">.</span><span class="d3">.</span></span>';
+      el.innerHTML = '<span class="vs-loading-text">loading<span class="d1">.</span><span class="d2">.</span><span class="d3">.</span></span>';
       // ensure it's visible
       el.removeAttribute('aria-hidden');
       el.removeAttribute('href');
@@ -68,7 +68,7 @@
   // Show an error message in the footer link area (replacing the link)
   function showErrorFooter(msg) {
     try {
-      const el = document.getElementById('tg-link-target');
+      const el = document.getElementById('vs-link-target');
       if (!el) return;
       // clear loading state
       el.removeAttribute('aria-busy');
@@ -155,7 +155,7 @@
     // so the last line of content is never covered.
     function updateFooterHeight() {
       const root = document.documentElement;
-      const footer = document.querySelector('.tg-footer');
+      const footer = document.querySelector('.vs-footer');
       if (!root || !footer) return;
 
       const footerH = footer.offsetHeight || 0;
@@ -276,12 +276,12 @@
       });
     }
     // cmd opens command input (simulate ':' key press)
-    bindBtn('tg-key-cmd', ':');
+    bindBtn('vs-key-cmd', ':');
     // Enter opens the selected link (simulate Enter keypress)
-    bindBtn('tg-key-enter', 'Enter');
+    bindBtn('vs-key-enter', 'Enter');
     // j/k navigate links
-    bindBtn('tg-key-j', 'j');
-    bindBtn('tg-key-k', 'k');
+    bindBtn('vs-key-j', 'j');
+    bindBtn('vs-key-k', 'k');
   }
 
   if (document.readyState === 'loading') {

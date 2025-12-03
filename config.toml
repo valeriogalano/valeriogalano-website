@@ -1,6 +1,6 @@
 baseurl = "https://valeriogalano.it/"
 title = "Valerio Galano, software and web developer"
-theme = "terminal-green"
+theme = "vim-style"
 languageCode = "en"
 disableKinds = ["taxonomy", "section"]
 

@@ -1,6 +1,6 @@
 {{ define "main" }}
-<section class="tg-help">
-  <div class="tg-buffer">
+<section class="vs-help">
+  <div class="vs-buffer">
     <h1>Help</h1>
     {{/* Gather routes from site params; provide sane defaults if empty */}}
     {{ $routes := .Site.Params.routes }}
@@ -13,21 +13,21 @@
     {{ end }}
 
     {{/* Render page-specific help content written in content/help.md */}}
-    <div class="tg-help-body">
+    <div class="vs-help-body">
       {{ .Content }}
     </div>
 
     <p>Available commands</p>
-    <ul class="tg-cmd-list">
+    <ul class="vs-cmd-list">
       {{ range $routes }}
         {{/* Default behavior: if showInHelp missing, treat as true */}}
         {{ $has := isset . "showInHelp" }}
         {{ $show := cond $has (index . "showInHelp") true }}
         {{ if not $show }}{{ continue }}{{ end }}
-        <li class="tg-cmd-item">
-          <code class="tg-cmd-token">{{ .cmd }}</code>
-          <span class="tg-cmd-sep">-</span>
-          <span class="tg-cmd-desc">{{ .desc }}</span>
+        <li class="vs-cmd-item">
+          <code class="vs-cmd-token">{{ .cmd }}</code>
+          <span class="vs-cmd-sep">-</span>
+          <span class="vs-cmd-desc">{{ .desc }}</span>
         </li>
       {{ end }}
     </ul>
