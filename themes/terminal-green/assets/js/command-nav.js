@@ -74,41 +74,15 @@
   }
 
   function init() {
-    // Reserve footer space only when the visible page content would be obscured by the fixed footer.
-    // This eliminates useless scroll on short pages while ensuring the last line stays visible on long pages.
+    // Always reserve footer space equal to the actual fixed footer height
+    // so the last line of content is never covered.
     function updateFooterHeight() {
       const root = document.documentElement;
       const footer = document.querySelector('.tg-footer');
       if (!root || !footer) return;
 
       const footerH = footer.offsetHeight || 0;
-
-      // Temporarily remove any reserved space so measurements reflect natural layout
-      const prev = getComputedStyle(root).getPropertyValue('--footer-h');
-      root.style.setProperty('--footer-h', '0px');
-
-      const vpH = window.innerHeight || root.clientHeight || 0;
-      const content = document.getElementById('content');
-
-      let needsReserve = false;
-      if (content) {
-        // Compute where the content actually ends in the document
-        const rect = content.getBoundingClientRect();
-        const contentBottom = Math.round(rect.bottom + (window.scrollY || window.pageYOffset || 0));
-        // If we were to reserve the footer, the visible bottom of the viewport shifts up by footerH
-        const viewportBottomIfReserved = Math.round((window.scrollY || window.pageYOffset || 0) + vpH - footerH);
-        // Reserve space if content would meet or exceed the visible bottom once the footer is present
-        needsReserve = contentBottom >= (viewportBottomIfReserved - 1); // epsilon guards off-by-one
-      } else {
-        // Fallback: compare document height to viewport height
-        const docH = Math.max(
-          document.body ? document.body.scrollHeight : 0,
-          root.scrollHeight || 0
-        );
-        needsReserve = docH >= (vpH - 1);
-      }
-
-      root.style.setProperty('--footer-h', (needsReserve ? footerH : 0) + 'px');
+      root.style.setProperty('--footer-h', footerH + 'px');
     }
 
     // Initial set and observers

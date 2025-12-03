@@ -23,3 +23,6 @@ Microsoft Azure
 [LinkedIn](https://www.linkedin.com/in/valeriogalano) |
 [Mastodon](https://mastodon.uno/@valeriogalano) | 
 [GitHub](https://github.com/valeriogalano)
+
+*Note: This website is a vibe coding-style exercise showcasing a minimalist developer profile.*
+

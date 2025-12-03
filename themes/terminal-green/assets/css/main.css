@@ -24,7 +24,17 @@ body.tg-body {
   /* Force a right vertical scrollbar like classic editors */
   overflow-y: auto;
   /* Reserve space for fixed footer */
-  padding-bottom: var(--footer-h); /* matches .tg-footer height */
+  /* Fallback for browsers that don't support CSS max(): at least 150px */
+  padding-bottom: 150px;
+}
+
+/* Prefer dynamic footer height when CSS max() is supported */
+@supports (padding: max(0px)) {
+  body.tg-body {
+    /* Ensure footer never overlaps content: reserve at least 150px,
+       or the dynamic footer height when available. */
+    padding-bottom: max(var(--footer-h), 150px);
+  }
 }
 
 /* Slight CRT glow */
@@ -53,7 +63,7 @@ a:focus { outline: none; }
 /* Show underline only on hover/focus via text-decoration, not border */
 .vim-nav a:hover, .vim-nav a:focus { border-bottom: none; text-decoration: underline; }
 
-.tg-content { padding: 16px; }
+.tg-content { padding: 16px 16px 40px; }
 .tg-article-header { margin-bottom: 12px; }
 .tg-buffer {
   /* Align content with header/footer (both use 16px side padding) */
@@ -122,6 +132,18 @@ a:focus { outline: none; }
 .vim-status { color: #00cc55; opacity: 0.9; }
 /* When command is active, hide the status text so input visually replaces it */
 body.cmd-active .tg-footer .vim-status { visibility: hidden; }
+/* Selected link target shown under the status/tip/buttons */
+.vim-link-target {
+  margin-top: 6px;
+  color: var(--green);
+  opacity: 0.85;
+  word-break: break-all; /* show long URLs nicely */
+  /* Reserve one line of space even when empty so the footer doesn't jump */
+  display: block;
+  min-height: 1.4em; /* matches body line-height */
+}
+/* Hide link target while command mode is active */
+body.cmd-active .tg-footer .vim-link-target { display: none; }
 /* When command is active, hide the mobile keys bar (cmd, j, k) */
 body.cmd-active .tg-footer .vim-mobile-keys { display: none !important; }
 
@@ -148,7 +170,7 @@ body.cmd-active .tg-footer .vim-mobile-keys { display: none !important; }
 /* Show the key bar on small screens and hide only the tip text (keep the counter) */
 @media (max-width: 768px) {
   /* Put counter and keys on the same row */
-  .tg-footer { display: flex; align-items: center; }
+  .tg-footer { display: flex; align-items: center; flex-wrap: wrap; }
   /* Keep only the tip hidden, leave the counter visible */
   .tg-footer .vim-status .vim-tip { display: none; }
   /* Ensure the status (counter) aligns nicely on the left */
@@ -161,6 +183,8 @@ body.cmd-active .tg-footer .vim-mobile-keys { display: none !important; }
     padding-top: 0;              /* same baseline as counter */
     gap: 6px;                    /* compact gap between j and k */
   }
+  /* Make link target occupy full width on the second line */
+  .tg-footer .vim-link-target { flex-basis: 100%; margin-top: 6px; }
   /* Ensure they are hidden while command mode is active */
   body.cmd-active .tg-footer .vim-mobile-keys { display: none !important; }
   /* Extra spacing between Enter and the j/k group */

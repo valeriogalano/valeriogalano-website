@@ -23,6 +23,16 @@
     } catch(_) {}
   }
 
+  function setLinkTarget(text) {
+    try {
+      const el = document.getElementById('tg-link-target');
+      if (!el) return;
+      // Show nothing when empty/undefined
+      const t = (text || '').trim();
+      el.textContent = t;
+    } catch(_) {}
+  }
+
   function isEditable(el) {
     if (!el) return false;
     const tag = el.tagName;
@@ -70,6 +80,13 @@
     }
     // Update footer status: current index (1-based) or 0 when none
     setStatus(idx >= 0 ? (idx + 1) : 0, links.length);
+    // Update link target display
+    if (idx >= 0 && idx < links.length) {
+      const a = links[idx];
+      setLinkTarget(a.getAttribute('href') || '');
+    } else {
+      setLinkTarget('');
+    }
   }
 
   function clearHighlight() {
@@ -80,6 +97,7 @@
     idx = -1;
     clearHighlight();
     setStatus(0, links.length);
+    setLinkTarget('');
   }
 
   function highlight() {
@@ -89,6 +107,9 @@
     a.classList.add('tg-link-focus');
     // Use native focus for accessibility but avoid default focus ring by CSS override
     try { a.focus({ preventScroll: true }); } catch(_) { try { a.focus(); } catch(_) {} }
+    // Update link target BEFORE measuring footer and scrolling,
+    // so the increased footer height is accounted for on first selection
+    setLinkTarget(a.getAttribute('href') || '');
     // Ensure the link is visible above the fixed footer
     ensureVisibleWithFooter(a);
     setStatus(idx + 1, links.length);
