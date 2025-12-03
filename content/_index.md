@@ -12,7 +12,7 @@ Hugo |
 Microsoft Azure 
 
 ## Contact
-[v.galano@daredevel.com](v.galano@daredevel.com)
+[v.galano@daredevel.com](mailto:v.galano@daredevel.com)
 
 ## Websites
 [Pensieri in codice](https://pensieriincodice.it) |
