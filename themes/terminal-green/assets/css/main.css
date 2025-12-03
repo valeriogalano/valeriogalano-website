@@ -15,7 +15,12 @@ html, body {
 
 body.tg-body {
   background: var(--black);
-  color: var(--green);
+  /* Match the Tip text color and opacity (#00cc55 at ~90%).
+     Use alpha on the text color so links/buttons with their own
+     color declarations keep their current appearance. */
+  color: rgba(0, 204, 85, 0.9);
+  /* Apply the same slight CRT glow effect used by the Tip to all text */
+  text-shadow: 0 0 8px var(--green);
   font-family: 'JetBrains Mono', 'Fira Code', 'Iosevka', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   font-size: 16px;
   line-height: 1.4;
@@ -42,7 +47,13 @@ body.tg-body {
   text-shadow: 0 0 8px var(--green);
 }
 
-a { color: var(--green); text-decoration: none; }
+/* Reduce glow a bit on headings for better readability */
+h1, h2, h3, h4, h5, h6 {
+  text-shadow: 0 0 5px var(--green);
+}
+
+/* Links: apply the Tip color+opacity as well */
+a { color: rgba(0, 204, 85, 0.9); text-decoration: none; }
 a:hover, a:focus { text-decoration: underline; }
 a:focus { outline: none; }
 
@@ -51,12 +62,12 @@ a:focus { outline: none; }
 .tg-logo img { display: block; max-width: 80px; height: auto; filter: drop-shadow(0 0 8px var(--green)); }
 
 .tg-ascii { padding-right: 110px; display:none; }
-.ascii-title { margin: 0; color: var(--green); font-size: 14px; line-height: 1.1; white-space: pre; }
+.ascii-title { margin: 0; color: rgba(0, 204, 85, 0.9); font-size: 14px; line-height: 1.1; white-space: pre; }
 
-.vim-bar { margin-top: 8px; border-top: 1px solid var(--g2); padding-top: 6px; color: var(--green); }
-.vim-bar .vim-path { color: var(--green); }
-.vim-bar .vim-sep { color: var(--green); }
-.vim-bar .vim-mode { color: var(--green); font-weight: 600; }
+.vim-bar { margin-top: 8px; border-top: 1px solid var(--g2); padding-top: 6px; color: rgba(0, 204, 85, 0.9); }
+.vim-bar .vim-path { color: rgba(0, 204, 85, 0.9); }
+.vim-bar .vim-sep { color: rgba(0, 204, 85, 0.9); }
+.vim-bar .vim-mode { color: rgba(0, 204, 85, 0.9); font-weight: 600; }
 
 .vim-nav { padding: 6px 16px; border-bottom: 1px solid var(--g2); }
 .vim-nav a { margin-right: 16px; border-bottom: none; padding-bottom: 0; }
@@ -87,13 +98,15 @@ a:focus { outline: none; }
   /* Make background visible around glyphs */
   padding: 0 2px;
   border-radius: 2px;
+  /* Keep focus highlight crisp and readable */
+  text-shadow: none !important;
 }
 
 /* Directory listing */
 .tg-dir { list-style: none; padding: 0; margin: 0; }
 .tg-dir li { padding: 4px 0; border-bottom: 1px dotted var(--g2); display: flex; gap: 12px; align-items: baseline; }
 .tg-dir-perm { color: var(--green); opacity: 0.7; }
-.tg-dir-link { color: var(--green); }
+.tg-dir-link { color: rgba(0, 204, 85, 0.9); }
 .tg-dir-date { margin-left: auto; opacity: 0.8; }
 
 /* Command line navigation */
@@ -164,6 +177,8 @@ body.cmd-active .tg-footer .vim-mobile-keys { display: none !important; }
   font-weight: 600;
   cursor: pointer;
   user-select: none;
+  /* Keep buttons (cmd, Enter, j, k) crisp: no global glow */
+  text-shadow: none;
 }
 .vim-key:focus { outline: 1px dotted var(--green); outline-offset: 2px; }
 
