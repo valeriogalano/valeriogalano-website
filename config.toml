@@ -31,3 +31,15 @@ disableKinds = ["taxonomy", "section"]
   path = "/"
   desc = "Quit (return to homepage)"
   showInHelp = true
+
+  [[params.routes]]
+  cmd = ":mail"
+  path = "mailto:v.galano@daredevel.com"
+  desc = "Send a mail to Valerio"
+  showInHelp = true
+
+  [[params.routes]]
+  cmd = ":pic"
+  path = "https://pensieriincodice.it"
+  desc = "Visit Pensieri in codice website"
+  showInHelp = true

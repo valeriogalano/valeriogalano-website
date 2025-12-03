@@ -18,4 +18,4 @@
     {{- $map = merge $map (dict $cmd $path) -}}
   {{- end -}}
 {{- end -}}
-<div id="tg-routes" data-json='{{ $map | jsonify | htmlEscape }}' hidden></div>
+<div id="tg-routes" data-json='{{ $map | jsonify }}' hidden></div>
