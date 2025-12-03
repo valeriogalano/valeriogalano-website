@@ -89,8 +89,8 @@
     a.classList.add('tg-link-focus');
     // Use native focus for accessibility but avoid default focus ring by CSS override
     try { a.focus({ preventScroll: true }); } catch(_) { try { a.focus(); } catch(_) {} }
-    // Ensure minimal scroll to reveal the link
-    a.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+    // Ensure the link is visible above the fixed footer
+    ensureVisibleWithFooter(a);
     setStatus(idx + 1, links.length);
   }
 
@@ -146,6 +146,46 @@
       const hasFocus = idx >= 0 && idx < links.length && links[idx].classList.contains('tg-link-focus');
       if (hasFocus) {
         openActive(e);
+      }
+    }
+  }
+
+  // --- Scrolling helpers ----------------------------------------------------
+  function getFooterHeight() {
+    // Prefer actual footer height when present
+    const f = document.querySelector('.tg-footer');
+    if (f && f.offsetHeight) return f.offsetHeight;
+    // Fallback to CSS var --footer-h if set
+    try {
+      const cs = getComputedStyle(document.body);
+      const v = cs.getPropertyValue('--footer-h');
+      const n = parseInt(v, 10);
+      if (!isNaN(n) && n > 0) return n;
+    } catch(_) {}
+    // Sensible default
+    return 64;
+  }
+
+  function ensureVisibleWithFooter(el) {
+    if (!el || typeof el.getBoundingClientRect !== 'function') return;
+    const rect = el.getBoundingClientRect();
+    const footerH = getFooterHeight();
+    const vpH = window.innerHeight || document.documentElement.clientHeight || 0;
+    const topVisible = 0;
+    const bottomVisible = vpH - footerH;
+
+    let dy = 0;
+    if (rect.bottom > bottomVisible) {
+      dy = rect.bottom - bottomVisible + 4; // small margin
+    } else if (rect.top < topVisible) {
+      dy = rect.top - topVisible - 8; // small margin
+    }
+    if (dy !== 0) {
+      // Instant scroll keeps keyboard nav snappy
+      try {
+        window.scrollBy({ top: dy, left: 0, behavior: 'auto' });
+      } catch(_) {
+        window.scrollBy(0, dy);
       }
     }
   }
