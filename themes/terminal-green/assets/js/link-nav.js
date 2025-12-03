@@ -222,9 +222,12 @@
       dy = rect.top - topVisible - 8; // small margin
     }
     if (dy !== 0) {
-      // Instant scroll keeps keyboard nav snappy
+      // Prefer smooth scrolling; respect reduced-motion preference
+      const prefersReduced = (() => {
+        try { return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch(_) { return false; }
+      })();
       try {
-        window.scrollBy({ top: dy, left: 0, behavior: 'auto' });
+        window.scrollBy({ top: dy, left: 0, behavior: prefersReduced ? 'auto' : 'smooth' });
       } catch(_) {
         window.scrollBy(0, dy);
       }
