@@ -163,7 +163,9 @@ body.cmd-active .tg-footer .vim-mobile-keys { display: none !important; }
   }
   /* Ensure they are hidden while command mode is active */
   body.cmd-active .tg-footer .vim-mobile-keys { display: none !important; }
-  /* Extra spacing between cmd and the j/k group */
+  /* Extra spacing between Enter and the j/k group */
+  .tg-footer #tg-key-enter { margin-right: 14px; }
+  /* Extra spacing between cmd and Enter */
   .tg-footer #tg-key-cmd { margin-right: 14px; }
 }
 

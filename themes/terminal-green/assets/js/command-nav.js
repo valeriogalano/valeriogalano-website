@@ -196,7 +196,7 @@
     // Use pointerdown to react fast on touch devices
     document.addEventListener('pointerdown', outsideCloseHandler, { passive: true });
 
-    // Mobile key bar bindings (cmd, j, k)
+    // Mobile key bar bindings (cmd, Enter, j, k)
     function dispatchKey(key) {
       try {
         const ev = new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true });
@@ -226,6 +226,8 @@
     }
     // cmd opens command input (simulate ':' key press)
     bindBtn('tg-key-cmd', ':');
+    // Enter opens the selected link (simulate Enter keypress)
+    bindBtn('tg-key-enter', 'Enter');
     // j/k navigate links
     bindBtn('tg-key-j', 'j');
     bindBtn('tg-key-k', 'k');
