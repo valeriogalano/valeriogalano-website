@@ -6,6 +6,12 @@ disableKinds = ["taxonomy", "section"]
 
 [params]
   Favicon = "/img/logo.png"
+  # SEO baseline
+  description = "Software and web developer. I build fast, accessible websites and tools."
+  author = "Valerio Galano"
+  twitter = "@valeriogalano" # your Twitter/X handle
+  mastodon = "https://mastodon.social/@valeriogalano" # used for rel=me
+  socialImage = "/img/logo.png" # default social preview image
 
   # SINGLE SOURCE OF TRUTH for command routes (used by ':' command and /help)
   # Edit only here to add/remove commands. Frontend JS reads these at build time.

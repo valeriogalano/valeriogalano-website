@@ -3,7 +3,19 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>{{ if .Title }}{{ .Title }} | {{ end }}{{ .Site.Title }}</title>
+  {{/* Titles and canonical */}}
+  {{ $pageTitle := cond .IsHome .Site.Title .Title }}
+  <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ $pageTitle }} | {{ .Site.Title }}{{ end }}</title>
+  {{ $canonical := .Permalink | default .Site.BaseURL }}
+  <link rel="canonical" href="{{ $canonical }}" />
+
+  {{/* Meta description & robots */}}
+  {{ $desc := or .Params.description (.Summary | plainify) }}
+  {{ if not $desc }}{{ $desc = .Site.Params.description }}{{ end }}
+  {{ if $desc }}<meta name="description" content="{{ $desc }}" />{{ end }}
+  {{ with .Site.Params.author }}<meta name="author" content="{{ . }}" />{{ end }}
+  {{ $robots := cond (.Params.noindex) "noindex, nofollow" "index, follow" }}
+  <meta name="robots" content="{{ $robots }}" />
   {{/* Favicon & PWA basics */}}
   {{ $favicon := .Site.Params.Favicon | default "/img/logo.png" }}
   <link rel="icon" type="image/png" href="{{ $favicon }}">
@@ -14,10 +26,33 @@
   <link rel="manifest" href="/site.webmanifest">
   <link rel="mask-icon" href="/img/logo.svg" color="#00ff66">
   <meta name="theme-color" content="#000000" />
+  <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml" />
+  {{ with .Site.Params.mastodon }}<link rel="me" href="{{ . }}">{{ end }}
   {{/* Fonts: prefer JetBrains Mono, fallback monospace */}}
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  {{/* Social: Open Graph & Twitter */}}
+  {{ $siteName := .Site.Title }}
+  {{ $type := cond .IsHome "website" "article" }}
+  {{ $img := or .Params.images (slice (.Site.Params.socialImage)) }}
+  {{ $imgUrl := (index $img 0) | absURL }}
+  <meta property="og:site_name" content="{{ $siteName }}" />
+  <meta property="og:locale" content='{{ default "en_US" .Site.LanguageCode }}' />
+  <meta property="og:type" content="{{ $type }}" />
+  <meta property="og:title" content="{{ $pageTitle }}" />
+  {{ if $desc }}<meta property="og:description" content="{{ $desc }}" />{{ end }}
+  <meta property="og:url" content="{{ $canonical }}" />
+  {{ if $imgUrl }}<meta property="og:image" content="{{ $imgUrl }}" />{{ end }}
+
+  <meta name="twitter:card" content="summary_large_image" />
+  {{ with .Site.Params.twitter }}<meta name="twitter:site" content="{{ . }}" />{{ end }}
+  <meta name="twitter:title" content="{{ $pageTitle }}" />
+  {{ if $desc }}<meta name="twitter:description" content="{{ $desc }}" />{{ end }}
+  {{ if $imgUrl }}<meta name="twitter:image" content="{{ $imgUrl }}" />{{ end }}
+
+  {{/* JSON-LD removed to satisfy static validator; can be re-added if needed. */}}
 
   {{ $css := resources.Get "css/main.css" | resources.Minify | resources.Fingerprint }}
   <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}" />
