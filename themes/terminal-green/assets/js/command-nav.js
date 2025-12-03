@@ -22,6 +22,40 @@
   function $(id) { return document.getElementById(id); }
 
   function wrapper() { return document.querySelector('.cmd-wrapper'); }
+
+  // --- Footer loading indicator (same visual used for link navigation) ------
+  function showLoadingFooter() {
+    try {
+      const el = document.getElementById('tg-link-target');
+      if (!el) return;
+      el.setAttribute('aria-live', 'polite');
+      el.setAttribute('aria-busy', 'true');
+      el.innerHTML = '<span class="tg-loading-text">loading<span class="d1">.</span><span class="d2">.</span><span class="d3">.</span></span>';
+    } catch(_) {}
+  }
+
+  function isHashOnly(href) {
+    if (!href) return false;
+    const t = href.trim();
+    return t.startsWith('#');
+  }
+
+  function navigateWithDelayCmd(href, delayMs) {
+    if (!href) return;
+    // If it's a same-page anchor, navigate immediately without loading/delay
+    if (isHashOnly(href)) {
+      try { window.location.assign(href); } catch(_) { window.location.href = href; }
+      return;
+    }
+    // Ensure the footer is visible (command UI hides it)
+    closeCmd();
+    // Show loading in the footer and delay navigation so the animation is visible
+    showLoadingFooter();
+    const ms = typeof delayMs === 'number' && delayMs >= 0 ? delayMs : 500;
+    setTimeout(() => {
+      try { window.location.assign(href); } catch(_) { window.location.href = href; }
+    }, ms);
+  }
   let lastOpenedAt = 0;
   function openCmd() {
     const w = wrapper();
@@ -63,11 +97,13 @@
         // try to close tab; fallback to redirect home
         print(":q");
         try { window.close(); } catch (e) {}
-        window.location.assign(target);
-        return;
+        // Show loading in footer and delay redirect so the animation is visible
+        navigateWithDelayCmd(target, 500);
+        return; // nothing more to do
       }
       print(normalized);
-      window.location.assign(target);
+      // Navigate with a short delay to show the loading animation in the footer
+      navigateWithDelayCmd(target, 500);
     } else {
       print(`E492: Not an editor command: ${cmd}`);
     }
@@ -122,9 +158,9 @@
         // blur input if focused
         if (document.activeElement === input) input.blur();
       } else if (e.key === "Enter" && document.activeElement === input) {
+        // Let handle() manage closing and loading/navigation
         handle(input.value);
         input.value = "";
-        closeCmd();
       }
     });
 
