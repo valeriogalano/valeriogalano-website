@@ -2,7 +2,7 @@
 title: "Homepage"
 ---
 # Valerio Galano
-Software and web developer
+Software and web developer. Read more [about me](/about).
 
 ## Main technologies
 PHP |
