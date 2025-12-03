@@ -28,9 +28,17 @@
     try {
       const el = document.getElementById('tg-link-target');
       if (!el) return;
+      // clear any previous error state
+      try { el.classList.remove('err'); } catch(_) {}
       el.setAttribute('aria-live', 'polite');
       el.setAttribute('aria-busy', 'true');
       el.innerHTML = '<span class="tg-loading-text">loading<span class="d1">.</span><span class="d2">.</span><span class="d3">.</span></span>';
+      // ensure it's visible
+      el.removeAttribute('aria-hidden');
+      el.removeAttribute('href');
+      el.removeAttribute('target');
+      el.removeAttribute('rel');
+      try { el.style.pointerEvents = 'none'; } catch(_) {}
     } catch(_) {}
   }
 
@@ -56,6 +64,26 @@
       try { window.location.assign(href); } catch(_) { window.location.href = href; }
     }, ms);
   }
+
+  // Show an error message in the footer link area (replacing the link)
+  function showErrorFooter(msg) {
+    try {
+      const el = document.getElementById('tg-link-target');
+      if (!el) return;
+      // clear loading state
+      el.removeAttribute('aria-busy');
+      // remove link behavior
+      el.removeAttribute('href');
+      el.removeAttribute('target');
+      el.removeAttribute('rel');
+      // set text and error class
+      el.textContent = String(msg || '').trim();
+      el.classList.add('err');
+      // make sure it's visible
+      el.removeAttribute('aria-hidden');
+      try { el.style.pointerEvents = 'none'; } catch(_) {}
+    } catch(_) {}
+  }
   let lastOpenedAt = 0;
   function openCmd() {
     const w = wrapper();
@@ -77,12 +105,18 @@
     }
   }
 
-  function print(msg) {
+  function print(msg, cls) {
     const out = $("cmd-output");
     if (!out) return;
     const line = document.createElement('div');
+    if (cls) line.className = String(cls);
     line.textContent = msg;
     out.appendChild(line);
+    // Mark wrapper so CSS can reveal output area
+    try {
+      const w = wrapper();
+      if (w) w.classList.add('has-output');
+    } catch(_) {}
     out.scrollTop = out.scrollHeight;
   }
 
@@ -105,7 +139,14 @@
       // Navigate with a short delay to show the loading animation in the footer
       navigateWithDelayCmd(target, 500);
     } else {
-      print(`E492: Not an editor command: ${cmd}`);
+      // Close command area and blur input
+      closeCmd();
+      try {
+        const input = document.getElementById('cmd-input');
+        if (document.activeElement === input) input.blur();
+      } catch(_) {}
+      // Show the error in the footer in place of the link
+      showErrorFooter(`E492: Not an editor command: ${cmd}`);
     }
   }
 

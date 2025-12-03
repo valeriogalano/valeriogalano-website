@@ -113,6 +113,10 @@ a:focus { outline: none; }
 }
 .cmd-wrapper.active { display:block; }
 .cmd-output { display: none; }
+/* Reveal output area if there is anything printed */
+.cmd-wrapper.has-output .cmd-output { display: block; margin-bottom: 6px; }
+/* Error line style for command output */
+.cmd-output .err { color: #ff5555; text-shadow: 0 0 6px #ff5555; }
 .cmd-line { display: flex; align-items: center; }
 .cmd-input {
   background: transparent;
@@ -143,6 +147,11 @@ body.cmd-active .tg-footer .vim-status { visibility: hidden; }
   /* Reserve one line of space even when empty so the footer doesn't jump */
   display: block;
   min-height: 1.4em; /* matches body line-height */
+}
+/* Error state shown in place of the link target */
+.vim-link-target.err {
+  color: #ff5555;
+  text-shadow: 0 0 6px #ff5555;
 }
 /* While loading, do not underline the footer text even on hover/focus */
 .vim-link-target[aria-busy="true"],
