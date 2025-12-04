@@ -5,6 +5,7 @@ url: "/help/"
 aliases: ["/help"]
 draft: false
 navLabel: "help"
+navOrder: 8 
 ---
 
 This page explains how navigation with `j`/`k` works and how to use the Vim‑style command line.

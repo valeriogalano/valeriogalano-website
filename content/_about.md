@@ -4,6 +4,7 @@ url: "/about/"
 aliases: ["/about/"]
 draft: false
 navLabel: "about"
+navOrder: 5
 ---
 
 # More than 20 Years of Code. Head in the Cloud. Hands in AI.

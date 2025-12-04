@@ -1,12 +1,39 @@
-{{- /* Build navbar from content (.md) files; no showInNav param required */ -}}
+{{- /* Build navbar from content (.md) files; supports optional front matter `navOrder` */ -}}
 <nav class="vim-nav" aria-label=":navigation">
   {{- /* Always include home */ -}}
   <a href="/">:home</a>
 
-  {{- /* Collect all regular content pages (exclude home). */ -}}
+  {{- /* Collect all regular content pages (home is a list page and excluded here). */ -}}
   {{- $pages := .Site.RegularPages -}}
+
+  {{- /* Build list of pages with a numeric navOrder (coerce strings like "2"). */ -}}
+  {{- $ordered := slice -}}
   {{- range $pages -}}
-    {{- /* Label priority: navLabel (front matter) > Title > file base name; normalized to lowercase for :command style */ -}}
+    {{- $raw := printf "%v" .Params.navOrder -}}
+    {{- if and (ne .Params.navOrder nil) (gt (len (findRE "^\\d+$" $raw)) 0) -}}
+      {{- $ordered = $ordered | append (dict "order" (int $raw) "page" .) -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $ordered = sort $ordered "order" -}}
+
+  {{- /* Build list of pages without a numeric navOrder; fallback order will be by Title. */ -}}
+  {{- $unordered := slice -}}
+  {{- range $pages -}}
+    {{- $raw := printf "%v" .Params.navOrder -}}
+    {{- if or (eq .Params.navOrder nil) (eq (len (findRE "^\\d+$" $raw)) 0) -}}
+      {{- $unordered = $unordered | append . -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $unordered = sort $unordered "Title" -}}
+
+  {{- /* Render ordered pages first, then the rest. */ -}}
+  {{- range $ordered -}}
+    {{- $p := .page -}}
+    {{- $label := lower (or $p.Params.navLabel (or $p.Title $p.File.TranslationBaseName)) -}}
+    <a href="{{ $p.RelPermalink }}">:{{ $label }}</a>
+  {{- end -}}
+
+  {{- range $unordered -}}
     {{- $label := lower (or .Params.navLabel (or .Title .File.TranslationBaseName)) -}}
     <a href="{{ .RelPermalink }}">:{{ $label }}</a>
   {{- end -}}

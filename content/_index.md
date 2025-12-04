@@ -1,5 +1,6 @@
 ---
 title: "Homepage"
+navOrder: 1
 ---
 # Valerio Galano
 Software and web developer. If you want, you can read more [about me](/about).
