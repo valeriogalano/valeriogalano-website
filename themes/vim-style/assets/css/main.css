@@ -134,7 +134,14 @@ a:focus { outline: none; }
 
 /* Footer statusline - fixed to bottom like Vim statusline */
 .vs-footer { position: fixed; left: 0; right: 0; bottom: 0; border-top: 1px solid var(--g2); padding: 10px 16px 20px; background: var(--black); z-index: 800; }
-.vim-status { color: #00cc55; opacity: 0.9; }
+.vim-status {
+  color: #00cc55;
+  opacity: 0.9;
+  display: flex;            /* allow right alignment of version */
+  align-items: center;
+}
+/* Push version to the far right within the status bar */
+.vim-ver { margin-left: auto; }
 /* When command is active, hide the status text so input visually replaces it */
 body.cmd-active .vs-footer .vim-status { visibility: hidden; }
 /* Selected link target shown under the status/tip/buttons */
@@ -192,13 +199,18 @@ body.cmd-active .vs-footer .vim-mobile-keys { display: none !important; }
   .vs-footer { display: flex; align-items: center; flex-wrap: wrap; }
   /* Keep only the tip hidden, leave the counter visible */
   .vs-footer .vim-status .vim-tip { display: none; }
-  /* Ensure the status (counter) aligns nicely on the left */
-  .vs-footer .vim-status { display: flex; align-items: center; }
+  /* Make status line span full width so version can align to far right */
+  .vs-footer .vim-status {
+    display: flex;
+    align-items: center;
+    flex-basis: 100%;          /* occupy full row width */
+  }
   /* Show keys on the same line and push them to the right */
   .vs-footer .vim-mobile-keys {
     display: flex;
-    margin-left: auto;           /* pushes keys to the far right */
-    justify-content: flex-end;   /* align j/k flush right */
+    flex-basis: 100%;            /* move keys to next row */
+    margin-left: 0;              /* no auto margins when full width */
+    justify-content: flex-end;   /* align keys flush right on their row */
     padding-top: 0;              /* same baseline as counter */
     gap: 6px;                    /* compact gap between j and k */
   }
