@@ -28,4 +28,3 @@ Microsoft Azure
 .
 
 *Note: This website is a vibe coding-style exercise showcasing a minimalist developer profile.*
-

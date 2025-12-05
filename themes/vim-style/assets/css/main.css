@@ -28,18 +28,13 @@ body.vs-body {
   text-rendering: optimizeLegibility;
   /* Force a right vertical scrollbar like classic editors */
   overflow-y: auto;
-  /* Reserve space for fixed footer */
-  /* Fallback for browsers that don't support CSS max(): at least 150px */
-  padding-bottom: 150px;
 }
 
-/* Prefer dynamic footer height when CSS max() is supported */
+/* Spacer element that reserves exactly the footer height in the normal flow */
+#vs-footer-spacer { height: var(--footer-h); }
+/* On devices with a bottom safe-area inset (iOS), include it in the spacer */
 @supports (padding: max(0px)) {
-  body.vs-body {
-    /* Ensure footer never overlaps content: reserve at least 150px,
-       or the dynamic footer height when available. */
-    padding-bottom: max(var(--footer-h), 150px);
-  }
+  #vs-footer-spacer { height: calc(var(--footer-h) + env(safe-area-inset-bottom)); }
 }
 
 /* Slight CRT glow */
@@ -71,12 +66,14 @@ a:focus { outline: none; }
 /* Show underline only on hover/focus via text-decoration, not border */
 .vim-nav a:hover, .vim-nav a:focus { border-bottom: none; text-decoration: underline; }
 
-.vs-content { padding: 16px 16px 40px; }
+.vs-content {
+  /* Side/top spacing consistent with header */
+  padding: 16px 16px 16px; /* was 40px bottom, which created extra gap on desktop */
+}
 .vs-buffer {
   /* Align content with header/footer (both use 16px side padding) */
   padding-left: 0;
-  /* Safety bottom padding so the last line never sits under the fixed footer */
-  padding-bottom: 36px;
+  /* Rely on body padding-bottom (dynamic --footer-h) to prevent overlap */
 }
 
 /* In-content link keyboard focus highlight (j/k navigation) */
@@ -234,6 +231,8 @@ body.cmd-active .vs-footer .vim-mobile-keys { display: none !important; }
   /* Extra spacing between cmd and Enter */
   .vs-footer #vs-key-cmd { margin-right: 14px; }
 }
+
+/* With a dedicated spacer and fixed footer, no special min-height is needed here. */
 
 /* Scrollbar (optional) */
 * { scrollbar-width: thin; scrollbar-color: var(--green) var(--black); }

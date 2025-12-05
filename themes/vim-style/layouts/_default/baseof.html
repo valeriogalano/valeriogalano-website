@@ -72,6 +72,9 @@
     {{ block "main" . }}{{ end }}
   </main>
 
+  <!-- Spacer to reserve exactly the footer height so content never sits beneath the fixed footer -->
+  <div id="vs-footer-spacer" aria-hidden="true"></div>
+
   {{ partial "command_nav.html" . }}
   {{ partial "footer.html" . }}
 

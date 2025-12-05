@@ -164,7 +164,16 @@
 
     // Initial set and observers
     updateFooterHeight();
+    // Run again as soon as DOM is interactive in case defer scripts race
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', updateFooterHeight, { once: true });
+    }
+    // A couple of microtasks to catch late layout shifts (fonts, media queries)
+    setTimeout(updateFooterHeight, 0);
+    setTimeout(updateFooterHeight, 250);
     window.addEventListener('resize', updateFooterHeight);
+    // Some mobile browsers fire orientationchange without resize first
+    window.addEventListener('orientationchange', updateFooterHeight);
     window.addEventListener('load', updateFooterHeight, { once: true });
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready.then(updateFooterHeight).catch(() => {});
@@ -172,13 +181,19 @@
     // Recompute when content size or structure changes
     try {
       const content = document.getElementById('content') || document.body;
+      const footer = document.querySelector('.vs-footer');
       if (window.ResizeObserver) {
         const ro = new ResizeObserver(() => updateFooterHeight());
         ro.observe(content);
+        // Also observe footer itself: its height can change when mobile keys wrap
+        if (footer) ro.observe(footer);
       }
       if (window.MutationObserver) {
         const mo = new MutationObserver(updateFooterHeight);
         mo.observe(content, { childList: true, subtree: true });
+        // Watch body class changes (e.g., command mode toggles) that affect footer layout
+        const mob = new MutationObserver(updateFooterHeight);
+        mob.observe(document.body, { attributes: true, attributeFilter: ['class'] });
       }
     } catch(_) {}
 
