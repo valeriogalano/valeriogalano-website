@@ -87,3 +87,59 @@ We keep tests pragmatic and fast, focused on validating the static artifacts tha
 
 - Help page missing commands
   - Verify `showInHelp = true` in the corresponding route block in `config.toml`.
+
+ 5. Versioning and changelog automation
+
+ - Purpose
+   - The page `content/_changelog.md` documents changes to the site's "fake terminal" (Vim-style UI: command line, j/k navigation, mobile keys, and related behaviors). The footer shows the site version from `config.toml` (`.Site.Params.version`). Keep these two in sync on every feature addition/improvement.
+
+ - Recommended workflow (manual, reliable)
+   1) Implement the feature (e.g., new `:` command, improved navigation behavior, mobile key tweak).
+   2) Bump the footer version by editing `params.version` in `config.toml`.
+   3) Prepend a new section to `content/_changelog.md` with a header `### vX.Y.Z` and succinct bullets of the user‑visible changes to the fake terminal (commands, keyboard/mobile interactions, accessibility labels, etc.). Keep newest first.
+   4) Build and smoke test:
+      - `bash scripts/smoke_public.sh` (or `--build` if Hugo is installed) — confirms the version marker is present and assets are healthy.
+   5) Commit both files together in one commit (message style: `chore(release): vX.Y.Z`). Optionally tag the commit (`git tag vX.Y.Z`).
+
+ - Optional automation (scripted release)
+   - You may add a small `scripts/release.sh` to automate: version bump in `config.toml`, changelog section prepend, optional `hugo --minify`, and a Git tag. Suggested behavior:
+     - Modes: `--dry-run` (prints intended edits) and default (applies changes).
+     - Inputs: `--version X.Y.Z` or `--type patch|minor|major` to compute the next version from the latest `params.version`.
+     - Edits:
+       - Update `params.version = "X.Y.Z"` in `config.toml`.
+       - Insert a new top block in `content/_changelog.md`:
+         ```
+         ### vX.Y.Z
+         * <short notes on terminal-related changes>
+         ```
+     - Post‑steps: run `bash scripts/smoke_public.sh --build` if Hugo is available, then commit+tag.
+   - Keep the script idempotent and POSIX/Bash portable (BSD/GNU sed compatible), following the patterns already used in `scripts/smoke_public.sh`.
+
+ - Extra smoke checks (optional)
+   - To guard the release process, you can extend `scripts/smoke_public.sh` with two assertions:
+     - Ensure `public/changelog/index.html` contains the latest version header (e.g., `grep -q '### vX.Y.Z' ...`).
+     - Optionally verify that the footer `.vim-ver` text matches the version set in `config.toml` (parse one and compare), if you decide to add parsing logic.
+
+ 6. Vim-like terminal simulation (desktop + mobile)
+
+ - What is included
+   - A simulated Vim environment in the UI:
+     - Keyboard navigation with `j`/`k` to move across links and `Enter` to open the selected one.
+     - A command line activated by typing `:` which accepts commands listed under `[[params.routes]]` in `config.toml` (single source of truth).
+     - A footer status bar with current position and the site version (`.vim-ver`).
+   - Mobile controls mirror the desktop interactions with four tap targets rendered in the footer: `cmd`, `Enter`, `j`, `k` (see `.vim-mobile-keys` block). These have ARIA labels and `role="button"` to ensure accessibility.
+
+ - Where it lives (key files)
+   - Command routes bridge: `themes/vim-style/layouts/partials/route_data.html` emits a hidden `<div id="vs-routes" data-json="…">` used by frontend JS.
+   - Frontend behavior:
+     - `themes/vim-style/assets/js/command-nav.js` — parses `#vs-routes`, manages the `:` command line and routing.
+     - `themes/vim-style/assets/js/link-nav.js` — handles link focus cycling with `j`/`k`, `Enter` activation, footer position updates, and mobile key bindings.
+   - Layout/partials:
+     - `themes/vim-style/layouts/_default/baseof.html` — wires assets via Hugo Pipes, exposes routes, includes partials.
+     - `themes/vim-style/layouts/partials/command_nav.html` — command line markup.
+     - `themes/vim-style/layouts/partials/footer.html` — status bar, version marker `.vim-ver`, and mobile keys container `.vim-mobile-keys`.
+
+ - Maintenance tips
+   - When adding a new command, only update `config.toml` under `[[params.routes]]`. The help page and `:` command will pick it up automatically via the serialized routes map.
+   - If you change labels or ARIA attributes for mobile/keyboard navigation, ensure the Help page content (`content/_help.md`) remains consistent and the smoke tests keep passing.
+   - Keep assets going through Hugo Pipes (minify + fingerprint) so integrity and caching remain correct.
