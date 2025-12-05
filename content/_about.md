@@ -1,7 +1,6 @@
 ---
 title: "About"
 url: "/about/"
-aliases: ["/about/"]
 draft: false
 navLabel: "about"
 navOrder: 5

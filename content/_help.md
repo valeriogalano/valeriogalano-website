@@ -2,7 +2,6 @@
 title: "Help"
 type: "help"
 url: "/help/"
-aliases: ["/help"]
 draft: false
 navLabel: "help"
 navOrder: 8 
