@@ -149,7 +149,13 @@ body.cmd-active .vs-footer .vim-status { visibility: hidden; }
   margin-top: 6px;
   color: var(--green);
   opacity: 0.85;
-  word-break: break-all; /* show long URLs nicely */
+  /* Truncate very long links on a single line with ellipsis */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  width: 100%;        /* ensure the element has a known width for ellipsis */
+  min-width: 0;       /* allow shrinking in flex contexts */
   /* Reserve one line of space even when empty so the footer doesn't jump */
   display: block;
   min-height: 1.4em; /* matches body line-height */
@@ -215,7 +221,12 @@ body.cmd-active .vs-footer .vim-mobile-keys { display: none !important; }
     gap: 6px;                    /* compact gap between j and k */
   }
   /* Make link target occupy full width on the second line */
-  .vs-footer .vim-link-target { flex-basis: 100%; margin-top: 6px; }
+  .vs-footer .vim-link-target {
+    flex-basis: 100%;
+    margin-top: 6px;
+    min-width: 0;      /* enable ellipsis in flex container on mobile */
+    width: 100%;
+  }
   /* Ensure they are hidden while command mode is active */
   body.cmd-active .vs-footer .vim-mobile-keys { display: none !important; }
   /* Extra spacing between Enter and the j/k group */
