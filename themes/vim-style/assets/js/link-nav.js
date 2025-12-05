@@ -170,6 +170,17 @@
   }
 
   function clearSelection() {
+    // Blur the currently focused link (if any) so native focus underline goes away
+    try {
+      if (idx >= 0 && idx < links.length) {
+        try { links[idx].blur(); } catch(_) {}
+      }
+      const ae = document.activeElement;
+      if (ae && ae.tagName === 'A' && links && links.indexOf(ae) !== -1) {
+        try { ae.blur(); } catch(_) {}
+      }
+    } catch(_) {}
+
     idx = -1;
     clearHighlight();
     setStatus(0, links.length);
