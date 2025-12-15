@@ -13,7 +13,7 @@ disableKinds = ["taxonomy", "section"]
   mastodon = "https://mastodon.social/@valeriogalano" # used for rel=me
   socialImage = "/img/logo.png" # default social preview image
   # Site version (shown subtly in the footer); edit here to bump
-  version = "0.1.0"
+  version = "0.2.0"
 
   # SINGLE SOURCE OF TRUTH for command routes (used by ':' command and /help)
   # Edit only here to add/remove commands. Frontend JS reads these at build time.
@@ -56,4 +56,16 @@ disableKinds = ["taxonomy", "section"]
   cmd = ":pic"
   path = "https://pensieriincodice.it"
   desc = "Visit Pensieri in codice website"
+  showInHelp = true
+
+  [[params.routes]]
+  cmd = ":issue"
+  path = "https://github.com/valeriogalano/valeriogalano-website/issues"
+  desc = "Report an issue"
+  showInHelp = true
+
+  [[params.routes]]
+  cmd = ":fork"
+  path = "https://github.com/valeriogalano/valeriogalano-website"
+  desc = "Fork on GitHub"
   showInHelp = true
