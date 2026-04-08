@@ -100,14 +100,3 @@ When you make user‑visible changes to the Vim‑style UI (commands, navigation
 ## License
 
 Not specified. If you intend to publish this code under a specific license, add a `LICENSE` file at the repository root.
-
----
-
-<div align="center">
-  <p>Made with ❤️ by <strong>Valerio Galano</strong></p>
-  <p>
-    <a href="https://valeriogalano.it/">Website</a> |
-    <a href="https://daredevel.com/">Blog</a> |
-    <a href="https://pensieriincodice.it/">Podcast</a>
-  </p>
-</div>
